@@ -23,3 +23,18 @@ Code for POC to test if GCP serverless (Cloud Run) works well with a Shared VPC 
 - CLOUD RUN
     - Configure Cloud Run to use the connectors
         - https://cloud.google.com/vpc/docs/configure-serverless-vpc-access#cloud-run
+
+## Versions
+- terraform
+    - ```>= 0.13```
+- google
+    - ```~> 3.77```
+- google-beta
+    - ```~> 3.77```
+
+## How to run
+- PERMISSIONS:
+    - For the POC you can use your own accout wich is the owner of the projects.
+    - For the real scenario the account or SA should have this permissions:
+        - One
+- Copy and rename the file ```terraform.examples.tfvars``` to ```terraform.tfvars``` and then replace with your own variables for your environment.
