@@ -200,7 +200,7 @@ module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
   version = "~> 0.2.0"
 
-  service_name           = "mygcrservice"
+  service_name           = "cloud-run-service"
   project_id             = var.serverless_project_id
   location               = local.location
   image                  = "us-docker.pkg.dev/cloudrun/container/hello"
