@@ -32,9 +32,33 @@ Code for POC to test if GCP serverless (Cloud Run) works well with a Shared VPC 
 - google-beta
     - ```~> 3.77```
 
+## Service Account
+To provision the resources of this example, create a privileged service account,
+where the service account key cannot be created.
+In addition, consider using Cloud Monitoring to alert on this service account's activity.
+Grant the following roles to the service account:
+
+```sh
+export ORG_ID=<YOUR-ORG-ID>
+export FOLDER_ID=<YOUR-FOLDER-ID>
+export SA_EMAIL=<YOUR-SA-EMAIL>
+
+gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/compute.networkAdmin"
+gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/resourcemanager.projectIamAdmin"
+gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/serviceusage.serviceUsageAdmin"
+gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/vpcaccess.admin"
+gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/compute.xpnAdmin"
+gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/compute.securityAdmin"
+```
+
 ## How to run
 - PERMISSIONS:
     - For the POC you can use your own accout wich is the owner of the projects.
     - For the real scenario the account or SA should have this permissions:
         - One
 - Copy and rename the file ```terraform.examples.tfvars``` to ```terraform.tfvars``` and then replace with your own variables for your environment.
+    - Use the command bellow to get the 
+
+
+
+gcloud projects list --filter="$(gcloud config get-value project)" --format="value(PROJECT_NUMBER)"
