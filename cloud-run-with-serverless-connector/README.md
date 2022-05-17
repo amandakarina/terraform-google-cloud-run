@@ -52,6 +52,7 @@ gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="se
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/vpcaccess.admin"
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/compute.xpnAdmin"
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/compute.securityAdmin"
+gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/run.developer"
 ```
 
 ## How to run
@@ -66,4 +67,20 @@ gcloud projects list --filter="$(gcloud config get-value project)" --format="val
 terraform init
 terraform plan
 terraform apply
+```
+
+## Deleting project
+Most of the times when trying to delete the VPC project you get an error regarding the liens (xpn). When this happen you should run those commands to delete the project properly:
+
+- Open the terminal on the project that you want to delete
+```sh
+gcloud config set project ${vpc_project_id}
+```
+- Get the liens that is blocking the deletion and save the name to use later
+```sh
+gcloud alpha resource-manager liens list
+```
+- Delete the lien
+```sh
+gcloud alpha resource-manager liens delete ${lien_name}
 ```
