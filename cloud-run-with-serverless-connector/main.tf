@@ -24,7 +24,7 @@ resource "google_project_service" "compute_engine_api_vpc" {
 }
 
 resource "time_sleep" "wait_googleapis" {
-  create_duration = "600s"
+  create_duration = "300s"
 
   depends_on = [
     google_project_service.vpcaccess_api,
@@ -177,7 +177,7 @@ resource "google_compute_firewall" "vpc_connector_requests" {
 }
 
 resource "time_sleep" "wait_firewall_rules" {
-  create_duration = "600s"
+  create_duration = "120s"
 
   depends_on = [
     google_compute_firewall.serverless_to_vpc_connector,
@@ -247,7 +247,7 @@ module "cloud_run" {
   project_id             = var.serverless_project_id
   location               = local.location
   image                  = "us-docker.pkg.dev/cloudrun/container/hello"
-  service_account_email  = "${var.serverless_project_number}-compute@developer.gserviceaccount.com"
+  service_account_email  = "${var.vpc_project_number}-compute@developer.gserviceaccount.com"
   template_annotations = {
     "autoscaling.knative.dev/maxScale": 2,
     "autoscaling.knative.dev/minScale": 1,
