@@ -3,24 +3,35 @@ locals {
   vpc_name = "shared-vpc-tf"
 }
 
-resource "google_project_service" "vpcaccess-api" {
+resource "google_project_service" "vpcaccess_api" {
   project = var.serverless_project_id
   service = "vpcaccess.googleapis.com"
 }
 
-resource "google_project_service" "cloud-run" {
+resource "google_project_service" "cloud_run" {
   project = var.serverless_project_id
   service = "run.googleapis.com"
 }
 
-resource "google_project_service" "compute-engine-api-serverless" {
+resource "google_project_service" "compute_engine_api_serverless" {
   project = var.serverless_project_id
   service = "compute.googleapis.com"
 }
 
-resource "google_project_service" "compute-engine-api-vpc" {
+resource "google_project_service" "compute_engine_api_vpc" {
   project = var.vpc_project_id
   service = "compute.googleapis.com"
+}
+
+resource "time_sleep" "wait_googleapis" {
+  create_duration = "600s"
+
+  depends_on = [
+    google_project_service.vpcaccess_api,
+    google_project_service.cloud_run,
+    google_project_service.compute_engine_api_serverless,
+    google_project_service.compute_engine_api_vpc
+  ]
 }
 
 module "vpc" {
@@ -42,12 +53,13 @@ module "vpc" {
   ]
 
   depends_on = [
-    google_project_service.compute-engine-api-serverless,
-    google_project_service.compute-engine-api-vpc,
+    google_project_service.compute_engine_api_serverless,
+    google_project_service.compute_engine_api_vpc,
+    time_sleep.wait_googleapis
   ]
 }
 
-module "net-shared-vpc-access" {
+module "net_shared_vpc_access" {
   source              = "terraform-google-modules/network/google//modules/fabric-net-svpc-access"
   version             = "~> 4.0"
   host_project_id     = var.vpc_project_id
@@ -68,7 +80,7 @@ module "net-shared-vpc-access" {
   ]
 }
 
-resource "google_compute_firewall" "serverless-to-vpc-connector" {
+resource "google_compute_firewall" "serverless_to_vpc_connector" {
   project       = var.vpc_project_id
   name          = "serverless-to-vpc-connector"
   network       = local.vpc_name
@@ -91,11 +103,11 @@ resource "google_compute_firewall" "serverless-to-vpc-connector" {
   }
 
   depends_on = [
-    module.net-shared-vpc-access
+    module.net_shared_vpc_access
   ]
 }
 
-resource "google_compute_firewall" "vpc-connector-to-serverless" {
+resource "google_compute_firewall" "vpc_connector_to_serverless" {
   project       = var.vpc_project_id
   name          = "vpc-connector-to-serverless"
   network       = local.vpc_name
@@ -118,11 +130,11 @@ resource "google_compute_firewall" "vpc-connector-to-serverless" {
   }
 
   depends_on = [
-    module.net-shared-vpc-access
+    module.net_shared_vpc_access
   ]
 }
 
-resource "google_compute_firewall" "vpc-connector-health-checks" {
+resource "google_compute_firewall" "vpc_connector_health_checks" {
   project       = var.vpc_project_id
   name          = "vpc-connector-health-checks"
   network       = local.vpc_name
@@ -136,11 +148,11 @@ resource "google_compute_firewall" "vpc-connector-health-checks" {
   }
 
   depends_on = [
-    module.net-shared-vpc-access
+    module.net_shared_vpc_access
   ]
 }
 
-resource "google_compute_firewall" "vpc-connector-requests" {
+resource "google_compute_firewall" "vpc_connector_requests" {
   project   = var.vpc_project_id
   name      = "vpc-connector-requests"
   network   = local.vpc_name
@@ -160,7 +172,18 @@ resource "google_compute_firewall" "vpc-connector-requests" {
   }
 
   depends_on = [
-    module.net-shared-vpc-access
+    module.net_shared_vpc_access
+  ]
+}
+
+resource "time_sleep" "wait_firewall_rules" {
+  create_duration = "600s"
+
+  depends_on = [
+    google_compute_firewall.serverless_to_vpc_connector,
+    google_compute_firewall.vpc_connector_to_serverless,
+    google_compute_firewall.vpc_connector_health_checks,
+    google_compute_firewall.vpc_connector_requests
   ]
 }
 
@@ -168,15 +191,34 @@ resource "google_project_iam_member" "gcp_sa_vpcaccess" {
   project = var.vpc_project_id
   role    = "roles/compute.networkUser"
   member  = "serviceAccount:service-${var.serverless_project_number}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+
+  depends_on = [
+    module.vpc,
+    module.net_shared_vpc_access
+  ]
 }
 
 resource "google_project_iam_member" "cloud_services" {
   project = var.vpc_project_id
   role    = "roles/compute.networkUser"
   member  = "serviceAccount:${var.serverless_project_number}@cloudservices.gserviceaccount.com"
+
+  depends_on = [
+    module.vpc,
+    module.net_shared_vpc_access
+  ]
 }
 
-module "serverless-connector" {
+resource "time_sleep" "wait_sa_roles" {
+  create_duration = "600s"
+
+  depends_on = [
+    google_project_iam_member.gcp_sa_vpcaccess,
+    google_project_iam_member.cloud_services
+  ]
+}
+
+module "serverless_connector" {
   source     = "terraform-google-modules/network/google//modules/vpc-serverless-connector-beta"
   project_id = var.serverless_project_id
   vpc_connectors = [{
@@ -190,9 +232,10 @@ module "serverless-connector" {
     }
   ]
   depends_on = [
-    google_project_service.vpcaccess-api,
-    google_project_iam_member.gcp_sa_vpcaccess,
-    google_project_iam_member.cloud_services
+    time_sleep.wait_googleapis,
+    time_sleep.wait_sa_roles,
+    time_sleep.wait_firewall_rules,
+    module.net_shared_vpc_access
   ]
 }
 
@@ -213,7 +256,6 @@ module "cloud_run" {
   }
 
   depends_on = [
-    module.serverless-connector,
-    google_project_service.cloud-run
+    module.serverless_connector
   ]
 }
