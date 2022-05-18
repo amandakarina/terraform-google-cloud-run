@@ -209,12 +209,24 @@ resource "google_project_iam_member" "cloud_services" {
   ]
 }
 
+resource "google_project_iam_member" "cloud_run_sa" {
+  project = var.serverless_project_id
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:${var.terraform_service_account}"
+
+  depends_on = [
+    module.vpc,
+    module.net_shared_vpc_access
+  ]
+}
+
 resource "time_sleep" "wait_sa_roles" {
-  create_duration = "600s"
+  create_duration = "300s"
 
   depends_on = [
     google_project_iam_member.gcp_sa_vpcaccess,
-    google_project_iam_member.cloud_services
+    google_project_iam_member.cloud_services,
+    google_project_iam_member.cloud_run_sa
   ]
 }
 
@@ -247,7 +259,7 @@ module "cloud_run" {
   project_id             = var.serverless_project_id
   location               = local.location
   image                  = "us-docker.pkg.dev/cloudrun/container/hello"
-  service_account_email  = "${var.vpc_project_number}-compute@developer.gserviceaccount.com"
+  service_account_email  = "${var.serverless_project_number}-compute@developer.gserviceaccount.com"
   template_annotations = {
     "autoscaling.knative.dev/maxScale": 2,
     "autoscaling.knative.dev/minScale": 1,

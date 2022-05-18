@@ -8,11 +8,6 @@ variable "vpc_project_id" {
   type        = string
 }
 
-variable "vpc_project_number" {
-  description = "The Project Number of the vpc_project"
-  type        = string
-}
-
 variable "serverless_project_id" {
   description = "The Project ID for the host project of the Serverless Application"
   type        = string

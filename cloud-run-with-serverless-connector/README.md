@@ -42,7 +42,6 @@ In addition, consider using Cloud Monitoring to alert on this service account's 
 Grant the following roles to the service account:
 
 ```sh
-export ORG_ID=<YOUR-ORG-ID>
 export FOLDER_ID=<YOUR-FOLDER-ID>
 export SA_EMAIL=<YOUR-SA-EMAIL>
 
