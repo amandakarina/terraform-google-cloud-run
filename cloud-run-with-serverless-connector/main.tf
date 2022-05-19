@@ -24,7 +24,7 @@ resource "google_project_service" "compute_engine_api_vpc" {
 }
 
 resource "time_sleep" "wait_googleapis" {
-  create_duration = "300s"
+  create_duration = "180s"
 
   depends_on = [
     google_project_service.vpcaccess_api,

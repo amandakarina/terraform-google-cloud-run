@@ -46,12 +46,20 @@ export FOLDER_ID=<YOUR-FOLDER-ID>
 export SA_EMAIL=<YOUR-SA-EMAIL>
 
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/compute.networkAdmin"
+
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/resourcemanager.projectIamAdmin"
+
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/serviceusage.serviceUsageAdmin"
+
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/vpcaccess.admin"
+
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/compute.xpnAdmin"
+
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/compute.securityAdmin"
+
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/run.developer"
+
+gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} --member="serviceAccount:${SA_EMAIL}" --role="roles/iam.serviceAccountUser"
 ```
 
 ## How to run
