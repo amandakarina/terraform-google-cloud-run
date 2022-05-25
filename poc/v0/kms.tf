@@ -34,3 +34,24 @@ module "cloud_run_kms" {
   ]
   prevent_destroy = false
 }
+
+module "artifact_registry_kms" {
+  source  = "terraform-google-modules/kms/google"
+  version = "~> 2.1"
+
+  project_id         = var.kms_project
+  location           = var.location
+  keyring            = "artifact-registry-key"
+  keys               = ["artifact_registry"]
+  set_decrypters_for = ["artifact_registry"]
+  set_encrypters_for = ["artifact_registry"]
+  decrypters = [
+    "serviceAccount:${data.google_project.serveeless_project.number}-compute@developer.gserviceaccount.com",
+    "serviceAccount:${google_project_service_identity.serverless_sa.email}",
+  ]
+  encrypters = [
+    "serviceAccount:${data.google_project.serveeless_project.number}-compute@developer.gserviceaccount.com",
+    "serviceAccount:${google_project_service_identity.serverless_sa.email}",
+  ]
+  prevent_destroy = false
+}
