@@ -47,7 +47,7 @@ module "cloud_run" {
     "autoscaling.knative.dev/maxScale" : 2,
     "autoscaling.knative.dev/minScale" : 1,
     "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
-    "run.googleapis.com/vpc-access-egress"    = "all-traffic"
+    "run.googleapis.com/vpc-access-egress"    = "private-ranges-only"
   }
 
   encryption_key = var.encryption_key
