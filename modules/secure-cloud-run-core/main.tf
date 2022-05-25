@@ -19,15 +19,16 @@ locals {
 }
 
 resource "google_project_service" "serverless_project_apis" {
-  for_each           = toset(local.serverless_apis)
-  project            = var.serverless_project
+  for_each = toset(local.serverless_apis)
+
+  project            = var.serverless_project_id
   service            = each.value
   disable_on_destroy = false
 }
 
 resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
-  project  = var.serverless_project
+  project  = var.serverless_project_id
   service  = "run.googleapis.com"
 }
 
@@ -36,7 +37,7 @@ module "cloud_run" {
   version = "~> 0.3.0"
 
   service_name          = var.service_name
-  project_id            = var.serverless_project
+  project_id            = var.serverless_project_id
   location              = var.location
   image                 = var.image
   service_account_email = var.cloud_run_sa

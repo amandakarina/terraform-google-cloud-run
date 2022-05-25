@@ -20,7 +20,7 @@ variable "location" {
   default     = "us-central1"
 }
 
-variable "serverless_project" {
+variable "serverless_project_id" {
   description = "The project where cloud run is going to be deployed."
   type        = string
 }

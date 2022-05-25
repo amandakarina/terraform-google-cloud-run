@@ -16,20 +16,20 @@
 
 output "connector_id" {
   description = "VPC serverless connector ID."
-  value = module.cloud_run_network.connector_id
+  value       = module.cloud_run_network.connector_id
 }
 
 output "keyring" {
-  description= "Name of the keyring."
-  value = module.cloud_run_security.keyring_name
+  description = "Name of the keyring."
+  value       = module.cloud_run_security.keyring_name
 }
 
 output "keys" {
-  description= "Map of key name => key self link."
-  value = module.cloud_run_security.keys
+  description = "Map of key name => key self link."
+  value       = module.cloud_run_security.keys
 }
 
 output "cloud_run_service" {
   description = "Cloud run service"
-  value = module.cloud_run_core.cloud_run_service
+  value       = module.cloud_run_core.cloud_run_service
 }

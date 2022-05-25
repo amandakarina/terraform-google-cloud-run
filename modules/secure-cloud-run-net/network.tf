@@ -15,13 +15,15 @@
  */
 
 module "serverless_connector" {
-  source     = "terraform-google-modules/network/google//modules/vpc-serverless-connector-beta"
-  project_id = var.vpc_project
+  source  = "terraform-google-modules/network/google//modules/vpc-serverless-connector-beta"
+  version = "~> 5.0"
+
+  project_id = var.vpc_project_id
   vpc_connectors = [{
     name            = var.connector_name
     region          = var.location
     subnet_name     = var.subnet_name
-    host_project_id = var.vpc_project
+    host_project_id = var.vpc_project_id
     machine_type    = "e2-micro"
     min_instances   = 2
     max_instances   = 7

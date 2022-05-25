@@ -18,19 +18,19 @@
 
 resource "google_project_service_identity" "vpcaccess_sa" {
   provider = google-beta
-  project  = var.serverless_project
+  project  = var.serverless_project_id
   service  = "vpcaccess.googleapis.com"
 }
 resource "google_project_iam_member" "gca_sa_vpcaccess" {
-  project = var.vpc_project
+  project = var.vpc_project_id
   role    = "roles/compute.networkUser"
   member  = "serviceAccount:${google_project_service_identity.vpcaccess_sa.email}"
 }
 
 resource "google_project_iam_member" "cloud_services" {
-  project = var.vpc_project
+  project = var.vpc_project_id
   role    = "roles/compute.networkUser"
-  member  = "serviceAccount:${data.google_project.serveeless_project.number}@cloudservices.gserviceaccount.com"
+  member  = "serviceAccount:${data.google_project.serverless_project_id.number}@cloudservices.gserviceaccount.com"
 }
 
 resource "google_artifact_registry_repository_iam_member" "artifact-registry-iam" {

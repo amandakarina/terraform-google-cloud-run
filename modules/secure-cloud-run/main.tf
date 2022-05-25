@@ -15,18 +15,19 @@
  */
 
 module "cloud_run_network" {
-  source             = "../secure-cloud-run-net"
-  connector_name     = var.connector_name
-  subnet_name        = var.subnet_name
-  location           = var.location
-  vpc_project        = var.vpc_project
-  serverless_project = var.serverless_project
-  shared_vpc_name    = var.shared_vpc_name
+  source = "../secure-cloud-run-net"
+
+  connector_name        = var.connector_name
+  subnet_name           = var.subnet_name
+  location              = var.location
+  vpc_project_id        = var.vpc_project_id
+  serverless_project_id = var.serverless_project_id
+  shared_vpc_name       = var.shared_vpc_name
 }
 
 resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
-  project  = var.serverless_project
+  project  = var.serverless_project_id
   service  = "run.googleapis.com"
 }
 
@@ -40,16 +41,17 @@ resource "google_artifact_registry_repository_iam_member" "artifact-registry-iam
 }
 
 module "cloud_run_security" {
-  source               = "../secure-cloud-run-security"
-  kms_project          = var.kms_project
-  location             = var.location
-  serverless_project   = var.serverless_project
-  prevent_destroy      = var.prevent_destroy
-  keys                 = [var.key_name]
-  keyring_name         = var.keyring_name
-  key_rotation_period  = var.key_rotation_period
-  key_protection_level = var.key_protection_level
-  set_encrypters_for   = [var.key_name]
+  source = "../secure-cloud-run-security"
+
+  kms_project_id        = var.kms_project_id
+  location              = var.location
+  serverless_project_id = var.serverless_project_id
+  prevent_destroy       = var.prevent_destroy
+  keys                  = [var.key_name]
+  keyring_name          = var.keyring_name
+  key_rotation_period   = var.key_rotation_period
+  key_protection_level  = var.key_protection_level
+  set_encrypters_for    = [var.key_name]
   encrypters = [
     "serviceAccount:${google_project_service_identity.serverless_sa.email}",
     "serviceAccount:${var.cloud_run_sa}"
@@ -62,14 +64,15 @@ module "cloud_run_security" {
 }
 
 module "cloud_run_core" {
-  source             = "../secure-cloud-run-core"
-  service_name       = var.service_name
-  location           = var.location
-  serverless_project = var.serverless_project
-  image              = var.image
-  cloud_run_sa       = var.cloud_run_sa
-  vpc_connector_id   = module.cloud_run_network.connector_id
-  encryption_key     = module.cloud_run_security.keys[var.key_name]
-  env_vars           = var.env_vars
-  members            = var.members
+  source = "../secure-cloud-run-core"
+
+  service_name          = var.service_name
+  location              = var.location
+  serverless_project_id = var.serverless_project_id
+  image                 = var.image
+  cloud_run_sa          = var.cloud_run_sa
+  vpc_connector_id      = module.cloud_run_network.connector_id
+  encryption_key        = module.cloud_run_security.keys[var.key_name]
+  env_vars              = var.env_vars
+  members               = var.members
 }

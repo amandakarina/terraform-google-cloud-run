@@ -25,17 +25,17 @@ variable "location" {
   default     = "us-central1"
 }
 
-variable "vpc_project" {
+variable "vpc_project_id" {
   description = "The project where shared vpc is."
   type        = string
 }
 
-variable "kms_project" {
+variable "kms_project_id" {
   description = "The project where KMS will be created."
   type        = string
 }
 
-variable "serverless_project" {
+variable "serverless_project_id" {
   description = "The project where cloud run is going to be deployed."
   type        = string
 }

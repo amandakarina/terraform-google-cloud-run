@@ -16,5 +16,5 @@
 
 output "cloud_run_service" {
   description = "Cloud run service"
-  value = module.cloud_run
+  value       = module.cloud_run
 }

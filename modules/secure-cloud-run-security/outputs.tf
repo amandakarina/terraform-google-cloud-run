@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
- output "keys" {
-   description= "Map of key name => key self link."
-   value = module.cloud_run_kms.keys
- }
+output "keys" {
+  description = "Map of key name => key self link."
+  value       = module.cloud_run_kms.keys
+}
 
- output "keyring" {
-   description= "Self link of the keyring."
-   value = module.cloud_run_kms.keyring
- }
+output "keyring" {
+  description = "Self link of the keyring."
+  value       = module.cloud_run_kms.keyring
+}
 
- output "keyring_name" {
-   description= "Name of the keyring."
-   value = module.cloud_run_kms.keyring_name
- }
+output "keyring_name" {
+  description = "Name of the keyring."
+  value       = module.cloud_run_kms.keyring_name
+}
 
- output "keyring_resource" {
-   description= "Keyring resource."
-   value = module.cloud_run_kms.keyring_resource
- }
+output "keyring_resource" {
+  description = "Keyring resource."
+  value       = module.cloud_run_kms.keyring_resource
+}

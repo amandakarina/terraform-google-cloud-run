@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-variable "kms_project" {
+variable "kms_project_id" {
   description = "The project where KMS will be created."
   type        = string
 }
 
-variable "serverless_project" {
+variable "serverless_project_id" {
   description = "The project where Cloud Run is going to be deployed."
   type        = string
 }
@@ -32,24 +32,24 @@ variable "prevent_destroy" {
 
 variable "keyring_name" {
   description = "Keyring name."
-  type = string
+  type        = string
 }
 
 variable "key_rotation_period" {
   description = "Periodo or key rotatin in seconds."
-  type = string
-  default = "100000s"
+  type        = string
+  default     = "100000s"
 }
 
 variable "keys" {
   description = "Key names."
-  type = list(string)
+  type        = list(string)
 }
 
 variable "key_protection_level" {
   description = "The protection level to use when creating a version based on this template. Default value: \"SOFTWARE\" Possible values: [\"SOFTWARE\", \"HSM\"]"
-  type = string
-  default = "SOFTWARE"
+  type        = string
+  default     = "SOFTWARE"
 }
 
 variable "location" {

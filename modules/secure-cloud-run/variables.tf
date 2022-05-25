@@ -21,12 +21,12 @@ variable "location" {
   default     = "us-central1"
 }
 
-variable "serverless_project" {
+variable "serverless_project_id" {
   description = "The project where cloud run is going to be deployed."
   type        = string
 }
 
-variable "vpc_project" {
+variable "vpc_project_id" {
   description = "The project where shared vpc is."
   type        = string
 }
@@ -36,7 +36,7 @@ variable "key_name" {
   type        = string
 }
 
-variable "kms_project" {
+variable "kms_project_id" {
   description = "The project where KMS will be created."
   type        = string
 }
@@ -95,19 +95,19 @@ variable "prevent_destroy" {
 
 variable "keyring_name" {
   description = "Keyring name."
-  type = string
+  type        = string
 }
 
 variable "key_rotation_period" {
   description = "Periodo or key rotatin in seconds."
-  type = string
-  default = "100000s"
+  type        = string
+  default     = "100000s"
 }
 
 variable "key_protection_level" {
   description = "The protection level to use when creating a version based on this template. Default value: \"SOFTWARE\" Possible values: [\"SOFTWARE\", \"HSM\"]"
-  type = string
-  default = "SOFTWARE"
+  type        = string
+  default     = "SOFTWARE"
 }
 
 variable "artifact_repository_project" {

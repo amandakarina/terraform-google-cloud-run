@@ -15,6 +15,6 @@
  */
 
 output "connector_id" {
-  value = tolist(module.serverless_connector.connector_ids)[0]
+  value       = tolist(module.serverless_connector.connector_ids)[0]
   description = "VPC serverless connector ID."
 }

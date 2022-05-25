@@ -19,7 +19,7 @@ module "cloudrun_allowed_ingress" {
   version           = "~> 4.0"
   constraint        = "constraints/run.allowedIngress"
   policy_for        = "project"
-  project_id        = var.serverless_project
+  project_id        = var.serverless_project_id
   policy_type       = "list"
   allow             = ["is:internal-and-cloud-load-balancing"]
   allow_list_length = 1
@@ -32,7 +32,7 @@ module "cloudrun_allowed_vpc_egress" {
   source            = "terraform-google-modules/org-policy/google"
   version           = "~> 4.0"
   policy_for        = "project"
-  project_id        = var.serverless_project
+  project_id        = var.serverless_project_id
   constraint        = "constraints/run.allowedVPCEgress"
   policy_type       = "list"
   allow             = ["private-ranges-only"]

@@ -15,7 +15,7 @@
  */
 
 output "project_number" {
-  value = data.google_project.kms_project.number
+  value = data.google_project.kms_project_id.number
 }
 
 output "ar_account" {

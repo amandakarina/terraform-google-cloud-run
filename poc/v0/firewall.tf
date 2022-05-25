@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 resource "google_compute_firewall" "serverless_to_vpc_connector" {
-  project       = var.vpc_project
+  project       = var.vpc_project_id
   name          = "serverless-to-vpc-connector"
   network       = var.shared_vpc_name
   direction     = "INGRESS"
@@ -37,7 +37,7 @@ resource "google_compute_firewall" "serverless_to_vpc_connector" {
 }
 
 resource "google_compute_firewall" "vpc_connector_to_serverless" {
-  project       = var.vpc_project
+  project       = var.vpc_project_id
   name          = "vpc-connector-to-serverless"
   network       = var.shared_vpc_name
   direction     = "EGRESS"
@@ -60,7 +60,7 @@ resource "google_compute_firewall" "vpc_connector_to_serverless" {
 }
 
 resource "google_compute_firewall" "vpc_connector_health_checks" {
-  project       = var.vpc_project
+  project       = var.vpc_project_id
   name          = "vpc-connector-health-checks"
   network       = var.shared_vpc_name
   direction     = "INGRESS"
@@ -74,7 +74,7 @@ resource "google_compute_firewall" "vpc_connector_health_checks" {
 }
 
 resource "google_compute_firewall" "vpc_connector_requests" {
-  project   = var.vpc_project
+  project   = var.vpc_project_id
   name      = "vpc-connector-requests"
   network   = var.shared_vpc_name
   direction = "INGRESS"

@@ -22,7 +22,7 @@ variable "cloudfunction_project_id" {
   type        = string
 }
 
-variable "kms_project_id" {
+variable "kms_project_id_id" {
   type        = string
 }
 
