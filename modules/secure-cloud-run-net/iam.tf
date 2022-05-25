@@ -20,6 +20,7 @@ data "google_project" "serverless_project_id" {
 
 resource "google_project_service_identity" "vpcaccess_sa" {
   provider = google-beta
+
   project  = var.serverless_project_id
   service  = "vpcaccess.googleapis.com"
 }

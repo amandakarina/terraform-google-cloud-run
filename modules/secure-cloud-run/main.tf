@@ -27,12 +27,14 @@ module "cloud_run_network" {
 
 resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
+
   project  = var.serverless_project_id
   service  = "run.googleapis.com"
 }
 
 resource "google_artifact_registry_repository_iam_member" "artifact-registry-iam" {
   provider   = google-beta
+
   project    = var.artifact_repository_project
   location   = var.artifact_repository_location
   repository = var.artifact_repository_name
@@ -52,11 +54,13 @@ module "cloud_run_security" {
   key_rotation_period   = var.key_rotation_period
   key_protection_level  = var.key_protection_level
   set_encrypters_for    = [var.key_name]
+  set_decrypters_for = [var.key_name]
+
   encrypters = [
     "serviceAccount:${google_project_service_identity.serverless_sa.email}",
     "serviceAccount:${var.cloud_run_sa}"
   ]
-  set_decrypters_for = [var.key_name]
+
   decrypters = [
     "serviceAccount:${google_project_service_identity.serverless_sa.email}",
     "serviceAccount:${var.cloud_run_sa}"
