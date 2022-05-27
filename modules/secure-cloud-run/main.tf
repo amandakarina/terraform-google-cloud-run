@@ -14,26 +14,54 @@
  * limitations under the License.
  */
 
+locals {
+  serverless_apis = ["vpcaccess.googleapis.com", "compute.googleapis.com", "container.googleapis.com", "run.googleapis.com", "cloudkms.googleapis.com"]
+  vpc_apis        = ["vpcaccess.googleapis.com", "compute.googleapis.com"]
+}
+
+resource "google_project_service" "serverless_project_apis" {
+  for_each = toset(local.serverless_apis)
+
+  project            = var.serverless_project_id
+  service            = each.value
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "vpc_project_apis" {
+  for_each = toset(local.vpc_apis)
+
+  project            = var.vpc_project_id
+  service            = each.value
+  disable_on_destroy = false
+}
+
+
 module "cloud_run_network" {
   source = "../secure-cloud-run-net"
 
-  connector_name        = var.connector_name
-  subnet_name           = var.subnet_name
-  location              = var.location
-  vpc_project_id        = var.vpc_project_id
-  serverless_project_id = var.serverless_project_id
-  shared_vpc_name       = var.shared_vpc_name
+  connector_name            = var.connector_name
+  subnet_name               = var.subnet_name
+  location                  = var.location
+  vpc_project_id            = var.vpc_project_id
+  serverless_project_id     = var.serverless_project_id
+  shared_vpc_name           = var.shared_vpc_name
+  connector_on_host_project = true
+  ip_cidr_range             = "10.10.128.0/28"
+
+  depends_on = [
+    google_project_service.vpc_project_apis
+  ]
 }
 
 resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
 
-  project  = var.serverless_project_id
-  service  = "run.googleapis.com"
+  project = var.serverless_project_id
+  service = "run.googleapis.com"
 }
 
-resource "google_artifact_registry_repository_iam_member" "artifact-registry-iam" {
-  provider   = google-beta
+resource "google_artifact_registry_repository_iam_member" "artifact_registry_iam" {
+  provider = google-beta
 
   project    = var.artifact_repository_project
   location   = var.artifact_repository_location
@@ -54,7 +82,7 @@ module "cloud_run_security" {
   key_rotation_period   = var.key_rotation_period
   key_protection_level  = var.key_protection_level
   set_encrypters_for    = [var.key_name]
-  set_decrypters_for = [var.key_name]
+  set_decrypters_for    = [var.key_name]
 
   encrypters = [
     "serviceAccount:${google_project_service_identity.serverless_sa.email}",
@@ -79,4 +107,9 @@ module "cloud_run_core" {
   encryption_key        = module.cloud_run_security.keys[var.key_name]
   env_vars              = var.env_vars
   members               = var.members
+
+  depends_on = [
+    google_project_service.serverless_project_apis,
+    google_artifact_registry_repository_iam_member.artifact_registry_iam
+  ]
 }

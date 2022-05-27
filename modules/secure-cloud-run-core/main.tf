@@ -14,18 +14,6 @@
  * limitations under the License.
  */
 
-locals {
-  serverless_apis = ["vpcaccess.googleapis.com", "compute.googleapis.com", "container.googleapis.com", "run.googleapis.com", "cloudkms.googleapis.com"]
-}
-
-resource "google_project_service" "serverless_project_apis" {
-  for_each = toset(local.serverless_apis)
-
-  project            = var.serverless_project_id
-  service            = each.value
-  disable_on_destroy = false
-}
-
 resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
   project  = var.serverless_project_id
@@ -41,17 +29,18 @@ module "cloud_run" {
   location              = var.location
   image                 = var.image
   service_account_email = var.cloud_run_sa
+  encryption_key        = var.encryption_key
+  members               = var.members
+  env_vars              = var.env_vars
+
   service_annotations = {
     "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
   }
+
   template_annotations = {
     "autoscaling.knative.dev/maxScale" : 2,
     "autoscaling.knative.dev/minScale" : 1,
     "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
     "run.googleapis.com/vpc-access-egress"    = "private-ranges-only"
   }
-
-  encryption_key = var.encryption_key
-  members        = var.members
-  env_vars       = var.env_vars
 }

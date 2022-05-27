@@ -11,7 +11,7 @@
 | image | Image url to be deployed on Cloud Run. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | `"us-central1"` | no |
 | members | Users/SAs to be given invoker access to the service | `list(string)` | `[]` | no |
-| serverless\_project | The project where cloud run is going to be deployed. | `string` | n/a | yes |
+| serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | service\_name | Shared VPC name. | `string` | n/a | yes |
 | vpc\_connector\_id | VPC Connector id. | `string` | n/a | yes |
 

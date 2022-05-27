@@ -16,15 +16,15 @@
 | key\_protection\_level | The protection level to use when creating a version based on this template. Default value: "SOFTWARE" Possible values: ["SOFTWARE", "HSM"] | `string` | `"SOFTWARE"` | no |
 | key\_rotation\_period | Periodo or key rotatin in seconds. | `string` | `"100000s"` | no |
 | keyring\_name | Keyring name. | `string` | n/a | yes |
-| kms\_project | The project where KMS will be created. | `string` | n/a | yes |
+| kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | `"us-central1"` | no |
 | members | Users/SAs to be given invoker access to the service | `list(string)` | `[]` | no |
 | prevent\_destroy | Set the prevent\_destroy lifecycle attribute on keys.. | `bool` | `true` | no |
-| serverless\_project | The project where cloud run is going to be deployed. | `string` | n/a | yes |
+| serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | service\_name | Shared VPC name. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be used. | `string` | n/a | yes |
 | subnet\_name | Subnet name to be re-used. | `string` | `null` | no |
-| vpc\_project | The project where shared vpc is. | `string` | n/a | yes |
+| vpc\_project\_id | The project where shared vpc is. | `string` | n/a | yes |
 
 ## Outputs
 

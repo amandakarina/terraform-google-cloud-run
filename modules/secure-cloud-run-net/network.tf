@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
+resource "google_compute_subnetwork" "vpc_subnetwork" {
+  name                       = var.subnet_name
+  project                    = var.vpc_project_id
+  network                    = var.shared_vpc_name
+  ip_cidr_range              = var.ip_cidr_range
+  region                     = var.location
+  private_ip_google_access   = true
+  private_ipv6_google_access = true
+}
+
 module "serverless_connector" {
   source  = "terraform-google-modules/network/google//modules/vpc-serverless-connector-beta"
   version = "~> 5.0"
 
-  project_id = var.vpc_project_id
+  project_id = var.connector_on_host_project ? var.vpc_project_id : var.serverless_project_id
   vpc_connectors = [{
     name            = var.connector_name
     region          = var.location
@@ -27,13 +37,13 @@ module "serverless_connector" {
     machine_type    = "e2-micro"
     min_instances   = 2
     max_instances   = 7
-    network         = var.shared_vpc_name
-    ip_cidr_range   = "10.8.0.0/28"
     }
   ]
   depends_on = [
     google_project_iam_member.gca_sa_vpcaccess,
-    google_project_iam_member.cloud_services
+    google_project_iam_member.cloud_services,
+    google_project_iam_member.run_identity_services,
+    google_compute_subnetwork.vpc_subnetwork
   ]
 }
 

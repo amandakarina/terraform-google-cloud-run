@@ -15,8 +15,8 @@
  */
 
 module "cloudrun_allowed_ingress" {
-  source            = "terraform-google-modules/org-policy/google"
-  version           = "~> 4.0"
+  source  = "terraform-google-modules/org-policy/google"
+  version = "~> 4.0"
 
   constraint        = "constraints/run.allowedIngress"
   policy_for        = "project"
@@ -27,8 +27,8 @@ module "cloudrun_allowed_ingress" {
 }
 
 module "cloudrun_allowed_vpc_egress" {
-  source            = "terraform-google-modules/org-policy/google"
-  version           = "~> 4.0"
+  source  = "terraform-google-modules/org-policy/google"
+  version = "~> 4.0"
 
   policy_for        = "project"
   project_id        = var.serverless_project_id

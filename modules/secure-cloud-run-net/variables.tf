@@ -31,7 +31,7 @@ variable "serverless_project_id" {
 }
 
 variable "connector_name" {
-  description = "The email address of the service account that will run the Terraform code."
+  description = "The name of the serverless connector which is going to be created."
   type        = string
 }
 
@@ -43,5 +43,16 @@ variable "subnet_name" {
 
 variable "shared_vpc_name" {
   description = "Shared VPC name which is going to be used."
+  type        = string
+}
+
+variable "connector_on_host_project" {
+  description = "Connector is going to be created on the host project if true. When false, connector is going to be created on service project. For more information, access [documentation](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc)."
+  type        = bool
+  default     = true
+}
+
+variable "ip_cidr_range" {
+  description = "The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported"
   type        = string
 }
