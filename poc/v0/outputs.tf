@@ -13,3 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+output "load-balancer-ip" {
+  value = module.lb-http.external_ip
+}
+
