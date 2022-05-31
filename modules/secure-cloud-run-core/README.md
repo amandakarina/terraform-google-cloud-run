@@ -1,4 +1,4 @@
-# sbp-serverless-blueprint
+# Secure Cloud Run Core
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

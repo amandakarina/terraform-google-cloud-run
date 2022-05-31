@@ -22,12 +22,12 @@ variable "location" {
 }
 
 variable "serverless_project_id" {
-  description = "The project where cloud run is going to be deployed."
+  description = "The project to deploy the cloud run service."
   type        = string
 }
 
 variable "vpc_project_id" {
-  description = "The project where shared vpc is."
+  description = "The host project for the shared vpc."
   type        = string
 }
 
@@ -88,7 +88,7 @@ variable "members" {
 }
 
 variable "prevent_destroy" {
-  description = "Set the prevent_destroy lifecycle attribute on keys.."
+  description = "Set the `prevent_destroy` lifecycle attribute on the Cloud KMS key."
   type        = bool
   default     = true
 }
@@ -110,17 +110,17 @@ variable "key_protection_level" {
   default     = "SOFTWARE"
 }
 
-variable "artifact_repository_project" {
-  description = "Artifact Repository Project to grant serverless identity viewer role."
+variable "artifact_registry_repository_project_id" {
+  description = "Artifact Registry Repository Project ID to grant serverless identity viewer role."
   type        = string
 }
 
-variable "artifact_repository_location" {
-  description = "Artifact Repository location to grant serverless identity viewer role."
+variable "artifact_registry_repository_location" {
+  description = "Artifact Registry Repository location to grant serverless identity viewer role."
   type        = string
 }
 
-variable "artifact_repository_name" {
-  description = "Artifact Repository name to grant serverless identity viewer role"
+variable "artifact_registry_repository_name" {
+  description = "Artifact Registry Repository name to grant serverless identity viewer role"
   type        = string
 }

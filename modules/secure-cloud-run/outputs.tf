@@ -20,12 +20,12 @@ output "connector_id" {
 }
 
 output "keyring" {
-  description = "Name of the keyring."
+  description = "Name of the Cloud KMS keyring."
   value       = module.cloud_run_security.keyring_name
 }
 
 output "keys" {
-  description = "Map of key name => key self link."
+  description = "Name of the Cloud KMS crypto key"
   value       = module.cloud_run_security.keys
 }
 

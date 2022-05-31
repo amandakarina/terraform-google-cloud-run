@@ -15,8 +15,17 @@
  */
 
 locals {
-  serverless_apis = ["vpcaccess.googleapis.com", "compute.googleapis.com", "container.googleapis.com", "run.googleapis.com", "cloudkms.googleapis.com"]
-  vpc_apis        = ["vpcaccess.googleapis.com", "compute.googleapis.com"]
+  serverless_apis = [
+   "vpcaccess.googleapis.com",
+   "compute.googleapis.com",
+   "container.googleapis.com",
+   "run.googleapis.com",
+   "cloudkms.googleapis.com"
+   ]
+  vpc_apis        = [
+  "vpcaccess.googleapis.com",
+  "compute.googleapis.com"
+  ]
 }
 
 resource "google_project_service" "serverless_project_apis" {
@@ -63,9 +72,9 @@ resource "google_project_service_identity" "serverless_sa" {
 resource "google_artifact_registry_repository_iam_member" "artifact_registry_iam" {
   provider = google-beta
 
-  project    = var.artifact_repository_project
-  location   = var.artifact_repository_location
-  repository = var.artifact_repository_name
+  project    = var.artifact_registry_repository_project
+  location   = var.artifact_registry_repository_location
+  repository = var.artifact_registry_repository_name
   role       = "roles/artifactregistry.reader"
   member     = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
 }
