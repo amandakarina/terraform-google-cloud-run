@@ -30,6 +30,16 @@ variable "ssl" {
   default     = true
 }
 
+variable "certificate" {
+  description = "Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty."
+  type        = string
+  default     = <<EOT
+"-----BEGIN CERTIFICATE-----
+xxx
+-----END CERTIFICATE-----"
+EOT
+}
+
 variable "domain" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
   type        = string

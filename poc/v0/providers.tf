@@ -16,12 +16,12 @@
 
 provider "google" {
   impersonate_service_account = var.terraform_service_account
-  project = var.project_id
+  #project = var.project_id
   request_timeout             = "60s"
 }
 
 provider "google-beta" {
   impersonate_service_account = var.terraform_service_account
-  project = var.project_id
+  #project = var.project_id
   request_timeout             = "60s"
 }
