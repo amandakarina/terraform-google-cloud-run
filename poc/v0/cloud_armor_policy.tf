@@ -18,6 +18,22 @@ variable "default_rules" {
     }))
 }
 
+ variable "owasp_rules" {
+     description = "value"
+     default = {
+         rule_sqli = {
+             action = "deny(403)"
+             priority = "1002"
+             expression = "evaluatePreconfiguredExpr('lfi-stable')"
+         }
+     }
+     type = map(object({
+         action         = string
+         priority       = string
+         expression     = string
+     }))
+ }
+    
 resource "google_compute_security_policy" "cloud-armor-security-policy" {
     project = var.project_id
     name = "cloud-armor-waf-policy"
@@ -37,6 +53,17 @@ resource "google_compute_security_policy" "cloud-armor-security-policy" {
         }
     }
 
+     dynamic "rule" {
+         for_each = var.owasp_rules
+         content {
+             action = rule.value.action
+             priority = rule.value.priority
+             match {
+                 expr {
+                     expression = rule.value.expression
+                 }
+             }
+         }
+     }
 }
-
 

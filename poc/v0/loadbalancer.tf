@@ -26,7 +26,9 @@
 module "lb-http" {
   source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
   version = "~> 5.1"
-  name    = "tf-cr-lb"
+  #name    = "tf-cr-lb"
+  name    = "my-certificate"
+  certificate = var.certificate
   project = var.project_id #var.serverless_project
 
   ssl                             = var.ssl
@@ -42,7 +44,7 @@ module "lb-http" {
         }
       ]
       enable_cdn              = false
-      security_policy         = google_compute_security_policy.cloud-armor-security-policy.id
+      security_policy         = null
       custom_request_headers  = null
       custom_response_headers = null
 
@@ -62,6 +64,7 @@ module "lb-http" {
 resource "google_compute_region_network_endpoint_group" "serverless_neg" {
   provider              = google-beta
   name                  = "serverless-neg"
+  project = var.serverless_project
   network_endpoint_type = "SERVERLESS"
   region                = var.region
   cloud_run {
@@ -76,10 +79,12 @@ resource "google_cloud_run_service" "default" {
 
   template {
     spec {
-      service_account_name = "project-service-account@prj-bu1-p-sample-restrict-f422.iam.gserviceaccount.com" #var.cloud_run_sa
+      service_account_name = "project-service-account@prj-bu2-p-sample-restrict-ff6c.iam.gserviceaccount.com" #var.cloud_run_sa
+      #service_account_name = "project-service-account@prj-bu2-p-sample-restrict-ff6c.iam.gserviceaccount.com" #var.cloud_run_sa
       containers {
         #image = "gcr.io/cloudrun/hello"
-        image = "us-central1-docker.pkg.dev/prj-bu1-p-sample-restrict-f422/serverless-central1-foundation2/cloudfunction--v2--foundation:latest" #var.image
+        #image = "us-central1-docker.pkg.dev/prj-bu2-p-sample-restrict-ff6c/serverless-central1-foundation2-bu2/cloudfunction--v2--foundation:latest"
+        image = "us-central1-docker.pkg.dev/prj-bu2-p-sample-restrict-ff6c/serverless-central1-foundation2-bu2/cloudfunction--v2--foundation:latest" #var.image
       }
     }
   }
@@ -91,6 +96,8 @@ resource "google_cloud_run_service_iam_member" "public-access" {
   service  = google_cloud_run_service.default.name
   role     = "roles/run.invoker"
   #member   = "allUsers"
-  member = "serviceAccount:project-service-account@prj-bu1-p-sample-restrict-f422.iam.gserviceaccount.com" #"serviceAccount:${module.cloud_run.service_account_email}"
+  member = "serviceAccount:project-service-account@prj-bu2-p-sample-restrict-ff6c.iam.gserviceaccount.com" #"serviceAccount:${module.cloud_run.service_account_email}"
+  #member = "serviceAccount:project-service-account@prj-bu2-p-sample-restrict-ff6c.iam.gserviceaccount.com" #"serviceAccount:${module.cloud_run.service_account_email}"
 }
 # [END cloudloadbalancing_ext_http_cloudrun]
+
