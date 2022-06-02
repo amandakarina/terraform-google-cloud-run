@@ -15,8 +15,19 @@
  */
 
 locals {
-  serverless_apis = ["vpcaccess.googleapis.com", "compute.googleapis.com", "container.googleapis.com", "run.googleapis.com", "cloudkms.googleapis.com", "artifactregistry.googleapis.com"]
-  vpc_apis        = ["vpcaccess.googleapis.com", "container.googleapis.com"]
+  serverless_apis = [
+	"vpcaccess.googleapis.com", 
+	"compute.googleapis.com", 
+	"container.googleapis.com", 
+	"run.googleapis.com", 
+	"cloudkms.googleapis.com", 
+	"artifactregistry.googleapis.com"
+  ]
+
+  vpc_apis = [
+	"vpcaccess.googleapis.com", 
+	"container.googleapis.com"
+  ]
 }
 
 resource "google_project_service_identity" "vpcaccess_identity_sa" {
@@ -68,7 +79,10 @@ module "cloud_run" {
 
   encryption_key = module.cloud_run_kms.keys["cloud_run"]
 
-  env_vars = [{ name : "PROJECT_ID", value : var.serverless_project }]
+  env_vars = [{ 
+	name : "PROJECT_ID", 
+	value : var.serverless_project 
+  }]
 
   depends_on = [
     module.serverless-connector

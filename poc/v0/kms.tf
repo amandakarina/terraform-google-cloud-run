@@ -55,3 +55,4 @@ module "artifact_registry_kms" {
   ]
   prevent_destroy = false
 }
+

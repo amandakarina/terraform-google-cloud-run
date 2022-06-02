@@ -92,3 +92,4 @@ resource "google_compute_firewall" "vpc_connector_requests" {
     protocol = "udp"
   }
 }
+

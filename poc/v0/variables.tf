@@ -94,3 +94,4 @@ variable "cloud_run_sa" {
     description = "Service account to be used on Cloud Run."
     type = string
 }
+
