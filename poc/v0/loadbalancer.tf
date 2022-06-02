@@ -18,7 +18,6 @@ module "lb-http" {
   source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
   version = "~> 5.1"
   name    = "tf-cr-lb"
-  certificate = var.certificate
   project = var.serverless_project
   ssl                             = var.ssl
   managed_ssl_certificate_domains = [var.domain]
