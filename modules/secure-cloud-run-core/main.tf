@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-resource "google_project_service_identity" "serverless_sa" {
-  provider = google-beta
-  project  = var.serverless_project_id
-  service  = "run.googleapis.com"
-}
-
 module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
   version = "~> 0.3.0"

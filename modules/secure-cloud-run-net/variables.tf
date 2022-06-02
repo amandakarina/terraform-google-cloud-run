@@ -17,7 +17,6 @@
 variable "location" {
   description = "The location where resources are going to be deployed."
   type        = string
-  default     = "us-central1"
 }
 
 variable "vpc_project_id" {

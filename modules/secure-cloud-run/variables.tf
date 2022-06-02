@@ -18,7 +18,6 @@
 variable "location" {
   description = "The location where resources are going to be deployed."
   type        = string
-  default     = "us-central1"
 }
 
 variable "serverless_project_id" {
@@ -57,7 +56,7 @@ variable "cloud_run_sa" {
 }
 
 variable "connector_name" {
-  description = "The email address of the service account that will run the Terraform code."
+  description = "The name for the connector to be created."
   type        = string
 }
 
@@ -68,7 +67,7 @@ variable "subnet_name" {
 }
 
 variable "shared_vpc_name" {
-  description = "Shared VPC name which is going to be used."
+  description = "Shared VPC name which is going to be re-used."
   type        = string
 }
 
@@ -83,7 +82,7 @@ variable "env_vars" {
 
 variable "members" {
   type        = list(string)
-  description = "Users/SAs to be given invoker access to the service"
+  description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
   default     = []
 }
 
@@ -101,13 +100,13 @@ variable "keyring_name" {
 variable "key_rotation_period" {
   description = "Periodo or key rotatin in seconds."
   type        = string
-  default     = "100000s"
+  default     = "2592000s"
 }
 
 variable "key_protection_level" {
   description = "The protection level to use when creating a version based on this template. Default value: \"SOFTWARE\" Possible values: [\"SOFTWARE\", \"HSM\"]"
   type        = string
-  default     = "SOFTWARE"
+  default     = "HSM"
 }
 
 variable "artifact_registry_repository_project_id" {

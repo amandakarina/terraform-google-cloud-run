@@ -55,7 +55,6 @@ variable "key_protection_level" {
 variable "location" {
   description = "The location where resources are going to be deployed."
   type        = string
-  default     = "us-central1"
 }
 
 variable "set_owners_for" {

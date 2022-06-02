@@ -12,7 +12,7 @@
 | keyring\_name | Keyring name. | `string` | n/a | yes |
 | keys | Key names. | `list(string)` | n/a | yes |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
-| location | The location where resources are going to be deployed. | `string` | `"us-central1"` | no |
+| location | The location where resources are going to be deployed. | `string` | n/a | yes |
 | owners | List of comma-separated owners for each key declared in set\_owners\_for. | `list(string)` | `[]` | no |
 | prevent\_destroy | Set the prevent\_destroy lifecycle attribute on keys.. | `bool` | `true` | no |
 | serverless\_project\_id | The project where Cloud Run is going to be deployed. | `string` | n/a | yes |

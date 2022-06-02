@@ -29,7 +29,7 @@ output "keys" {
   value       = module.cloud_run_security.keys
 }
 
-output "cloud_run_service" {
-  description = "Cloud run service"
-  value       = module.cloud_run_core.cloud_run_service
+output "service_name" {
+  value       = module.cloud_run_core.service_name
+  description = "Name of the created service"
 }

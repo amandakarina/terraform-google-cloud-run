@@ -17,7 +17,6 @@
 variable "location" {
   description = "The location where resources are going to be deployed."
   type        = string
-  default     = "us-central1"
 }
 
 variable "serverless_project_id" {
@@ -26,12 +25,12 @@ variable "serverless_project_id" {
 }
 
 variable "service_name" {
-  description = "Shared VPC name."
+  description = "The name of the Cloud Run service to create"
   type        = string
 }
 
 variable "image" {
-  description = "Image url to be deployed on Cloud Run."
+  description = "GCR hosted image URL to deploy"
   type        = string
 }
 
@@ -41,7 +40,7 @@ variable "cloud_run_sa" {
 }
 
 variable "vpc_connector_id" {
-  description = "VPC Connector id."
+  description = "VPC Connector id in the forma projects/PROJECT/locations/LOCATION/connectors/NAME."
   type        = string
 }
 
@@ -61,6 +60,6 @@ variable "env_vars" {
 
 variable "members" {
   type        = list(string)
-  description = "Users/SAs to be given invoker access to the service"
+  description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
   default     = []
 }

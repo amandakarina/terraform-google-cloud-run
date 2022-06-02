@@ -16,15 +16,15 @@
 
 locals {
   serverless_apis = [
-   "vpcaccess.googleapis.com",
-   "compute.googleapis.com",
-   "container.googleapis.com",
-   "run.googleapis.com",
-   "cloudkms.googleapis.com"
-   ]
-  vpc_apis        = [
-  "vpcaccess.googleapis.com",
-  "compute.googleapis.com"
+    "vpcaccess.googleapis.com",
+    "compute.googleapis.com",
+    "container.googleapis.com",
+    "run.googleapis.com",
+    "cloudkms.googleapis.com"
+  ]
+  vpc_apis = [
+    "vpcaccess.googleapis.com",
+    "compute.googleapis.com"
   ]
 }
 
