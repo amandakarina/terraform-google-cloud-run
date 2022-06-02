@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-###### lb variables
 variable "project_id" {
   type = string
 }
@@ -30,16 +29,6 @@ variable "ssl" {
   default     = true
 }
 
-variable "certificate" {
-  description = "Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty."
-  type        = string
-  default     = <<EOT
-"-----BEGIN CERTIFICATE-----
-xxx
------END CERTIFICATE-----"
-EOT
-}
-
 variable "domain" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
   type        = string
@@ -49,8 +38,6 @@ variable "lb-name" {
   description = "Name for load balancer and associated resources"
   default     = "run-lb"
 }
-
-######
 
 variable "terraform_service_account" {
   description = "The email address of the service account that will run the Terraform code."

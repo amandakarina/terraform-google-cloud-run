@@ -19,16 +19,12 @@ locals {
   vpc_apis        = ["vpcaccess.googleapis.com", "container.googleapis.com"]
 }
 
-####
-
 resource "google_project_service_identity" "vpcaccess_identity_sa" {
   provider = google-beta
 
   project = var.serverless_project
   service = "vpcaccess.googleapis.com"
 }
-
-###
 
 resource "google_project_service" "serverless_project_apis" {
   for_each           = toset(local.serverless_apis)

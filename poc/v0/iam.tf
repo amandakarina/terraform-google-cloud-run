@@ -47,3 +47,11 @@ resource "google_artifact_registry_repository_iam_member" "artifact-registry-iam
   member     = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
 }
 
+resource "google_cloud_run_service_iam_member" "public-access" {
+  location = var.location
+  project  = var.project_id
+  service  = "hello-world-with-apis-test"
+  role     = "roles/run.invoker"
+  member = "serviceAccount:${var.cloud_run_sa}"
+}
+
