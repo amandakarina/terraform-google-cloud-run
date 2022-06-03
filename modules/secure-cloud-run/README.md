@@ -22,8 +22,8 @@
 | prevent\_destroy | Set the `prevent_destroy` lifecycle attribute on the Cloud KMS key. | `bool` | `true` | no |
 | serverless\_project\_id | The project to deploy the cloud run service. | `string` | n/a | yes |
 | service\_name | Shared VPC name. | `string` | n/a | yes |
-| shared\_vpc\_name | Shared VPC name which is going to be re-used. | `string` | n/a | yes |
-| subnet\_name | Subnet name to be re-used. | `string` | `null` | no |
+| shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
+| subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
 | vpc\_project\_id | The host project for the shared vpc. | `string` | n/a | yes |
 
 ## Outputs

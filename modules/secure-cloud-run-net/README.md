@@ -10,8 +10,8 @@
 | ip\_cidr\_range | The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
-| shared\_vpc\_name | Shared VPC name which is going to be used. | `string` | n/a | yes |
-| subnet\_name | Subnet name to be re-used. | `string` | `null` | no |
+| shared\_vpc\_name | Shared VPC name which is going to be used to create Serverless Connector. | `string` | n/a | yes |
+| subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
 | vpc\_project\_id | The project where shared vpc is. | `string` | n/a | yes |
 
 ## Outputs

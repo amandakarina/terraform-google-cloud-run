@@ -61,13 +61,13 @@ variable "connector_name" {
 }
 
 variable "subnet_name" {
-  description = "Subnet name to be re-used."
+  description = "Subnet name to be re-used to create Serverless Connector."
   type        = string
   default     = null
 }
 
 variable "shared_vpc_name" {
-  description = "Shared VPC name which is going to be re-used."
+  description = "Shared VPC name which is going to be re-used to create Serverless Connector."
   type        = string
 }
 
