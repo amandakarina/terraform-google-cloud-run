@@ -72,7 +72,7 @@ resource "google_project_service_identity" "serverless_sa" {
 resource "google_artifact_registry_repository_iam_member" "artifact_registry_iam" {
   provider = google-beta
 
-  project    = var.artifact_registry_repository_project
+  project    = var.artifact_registry_repository_project_id
   location   = var.artifact_registry_repository_location
   repository = var.artifact_registry_repository_name
   role       = "roles/artifactregistry.reader"
@@ -86,12 +86,10 @@ module "cloud_run_security" {
   location              = var.location
   serverless_project_id = var.serverless_project_id
   prevent_destroy       = var.prevent_destroy
-  keys                  = [var.key_name]
+  key_name              = var.key_name
   keyring_name          = var.keyring_name
   key_rotation_period   = var.key_rotation_period
   key_protection_level  = var.key_protection_level
-  set_encrypters_for    = [var.key_name]
-  set_decrypters_for    = [var.key_name]
 
   encrypters = [
     "serviceAccount:${google_project_service_identity.serverless_sa.email}",
@@ -113,7 +111,7 @@ module "cloud_run_core" {
   image                 = var.image
   cloud_run_sa          = var.cloud_run_sa
   vpc_connector_id      = module.cloud_run_network.connector_id
-  encryption_key        = module.cloud_run_security.keys[var.key_name]
+  encryption_key        = module.cloud_run_security.key
   env_vars              = var.env_vars
   members               = var.members
 

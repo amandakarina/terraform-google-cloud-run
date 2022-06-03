@@ -26,7 +26,7 @@ output "keyring" {
 
 output "keys" {
   description = "Name of the Cloud KMS crypto key"
-  value       = module.cloud_run_security.keys
+  value       = module.cloud_run_security.key
 }
 
 output "service_name" {

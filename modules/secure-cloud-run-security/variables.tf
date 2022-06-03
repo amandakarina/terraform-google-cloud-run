@@ -38,29 +38,23 @@ variable "keyring_name" {
 variable "key_rotation_period" {
   description = "Periodo or key rotatin in seconds."
   type        = string
-  default     = "100000s"
+  default     = "2592000s"
 }
 
-variable "keys" {
-  description = "Key names."
-  type        = list(string)
+variable "key_name" {
+  description = "Key name."
+  type        = string
 }
 
 variable "key_protection_level" {
   description = "The protection level to use when creating a version based on this template. Default value: \"SOFTWARE\" Possible values: [\"SOFTWARE\", \"HSM\"]"
   type        = string
-  default     = "SOFTWARE"
+  default     = "HSM"
 }
 
 variable "location" {
   description = "The location where resources are going to be deployed."
   type        = string
-}
-
-variable "set_owners_for" {
-  description = "Name of keys for which owners will be set."
-  type        = list(string)
-  default     = []
 }
 
 variable "owners" {
@@ -69,20 +63,8 @@ variable "owners" {
   default     = []
 }
 
-variable "set_encrypters_for" {
-  description = "Name of keys for which encrypters will be set."
-  type        = list(string)
-  default     = []
-}
-
 variable "encrypters" {
   description = "List of comma-separated owners for each key declared in set_encrypters_for."
-  type        = list(string)
-  default     = []
-}
-
-variable "set_decrypters_for" {
-  description = "Name of keys for which decrypters will be set."
   type        = list(string)
   default     = []
 }
