@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  type = string
-}
-
 variable "region" {
   description = "Location for load balancer and Cloud Run resources"
   default     = "us-central1"
@@ -50,8 +46,18 @@ variable "location" {
   default     = "us-central1"
 }
 
+variable "service_name" {
+  description = "Name for Cloud Run service."
+  type = string
+  default = "hello-world-with-apis-test"
+}
+
 variable "vpc_project_id" {
   description = "The project where shared vpc is."
+  type        = string
+}
+
+variable "project_id" {
   type        = string
 }
 

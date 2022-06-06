@@ -31,7 +31,7 @@ module "serverless-connector" {
   ]
   depends_on = [
     google_project_service.serverless_project_apis,
-    google_project_service.vpc_project_id_apis,
+    google_project_service.vpc_project_apis,
     google_project_iam_member.gca_sa_vpcaccess,
     google_project_iam_member.cloud_services
   ]

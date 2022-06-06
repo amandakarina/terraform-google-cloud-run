@@ -18,7 +18,7 @@ module "lb-http" {
   source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
   version = "~> 5.1"
   name    = "tf-cr-lb"
-  project = var.serverless_project
+  project = var.serverless_project_id
   ssl                             = var.ssl
   managed_ssl_certificate_domains = [var.domain]
   https_redirect                  = var.ssl
@@ -52,16 +52,16 @@ module "lb-http" {
 resource "google_compute_region_network_endpoint_group" "serverless_neg" {
   provider              = google-beta
   name                  = "serverless-neg"
-  project = var.serverless_project
+  project = var.serverless_project_id
   network_endpoint_type = "SERVERLESS"
   region                = var.region
   cloud_run {
-    service = "hello-world-with-apis-test"
+    service = var.service_name
   }
 }
 
 resource "google_compute_security_policy" "cloud-armor-security-policy" {
-    project = var.serverless_project
+    project = var.serverless_project_id
     name = "cloud-armor-waf-policy"
 }
 

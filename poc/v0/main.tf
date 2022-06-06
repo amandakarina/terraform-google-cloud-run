@@ -33,40 +33,40 @@ locals {
 resource "google_project_service_identity" "vpcaccess_identity_sa" {
   provider = google-beta
 
-  project = var.serverless_project
+  project = var.serverless_project_id
   service = "vpcaccess.googleapis.com"
 }
 
 resource "google_project_service" "serverless_project_apis" {
   for_each           = toset(local.serverless_apis)
-  project            = var.serverless_project
+  project            = var.serverless_project_id
   service            = each.value
   disable_on_destroy = false
 }
 
 resource "google_project_service" "vpc_project_apis" {
   for_each           = toset(local.vpc_apis)
-  project            = var.vpc_project
+  project            = var.vpc_project_id
   service            = each.value
   disable_on_destroy = false
 }
 
  resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
-  project  = var.serverless_project
+  project  = var.serverless_project_id
   service  = "run.googleapis.com"
 }
 
 data "google_project" "serverless_project" {
-    project_id = var.serverless_project
+    project_id = var.serverless_project_id
 }
 
 module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
   version = "~> 0.3.0"
 
-  service_name          = "hello-world-with-apis-test"
-  project_id            = var.serverless_project
+  service_name          = var.service_name
+  project_id            = var.serverless_project_id
   location              = var.location
   image                 = var.image
   service_account_email = var.cloud_run_sa
@@ -81,7 +81,7 @@ module "cloud_run" {
 
   env_vars = [{ 
 	name : "PROJECT_ID", 
-	value : var.serverless_project 
+	value : var.serverless_project_id
   }]
 
   depends_on = [

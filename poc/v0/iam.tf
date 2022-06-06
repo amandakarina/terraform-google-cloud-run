@@ -15,25 +15,25 @@
  */
 
 resource "google_project_iam_member" "run_identity_services" {
-  project = var.vpc_project
+  project = var.vpc_project_id
   role    = "roles/vpcaccess.user"
   member     = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
 }
 
 resource "google_project_service_identity" "vpcaccess_sa" {
   provider = google-beta
-  project  = var.serverless_project
+  project  = var.serverless_project_id
   service  = "vpcaccess.googleapis.com"
 }
 
 resource "google_project_iam_member" "gca_sa_vpcaccess" {
-  project = var.vpc_project
+  project = var.vpc_project_id
   role    = "roles/compute.networkUser"
   member  = "serviceAccount:${google_project_service_identity.vpcaccess_sa.email}"
 }
 
 resource "google_project_iam_member" "cloud_services" {
-  project = var.vpc_project
+  project = var.vpc_project_id
   role    = "roles/compute.networkUser"
   member  = "serviceAccount:${data.google_project.serverless_project.number}@cloudservices.gserviceaccount.com"
 }
@@ -50,7 +50,7 @@ resource "google_artifact_registry_repository_iam_member" "artifact-registry-iam
 resource "google_cloud_run_service_iam_member" "public-access" {
   location = var.location
   project  = var.project_id
-  service  = "hello-world-with-apis-test"
+  service  = var.serverless_project_id
   role     = "roles/run.invoker"
   member = "serviceAccount:${var.cloud_run_sa}"
 }

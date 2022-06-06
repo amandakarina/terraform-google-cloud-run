@@ -46,11 +46,11 @@ module "artifact_registry_kms" {
   set_decrypters_for = ["artifact_registry"]
   set_encrypters_for = ["artifact_registry"]
   decrypters = [
-    "serviceAccount:${data.google_project.serverless_project_id.number}-compute@developer.gserviceaccount.com",
+    "serviceAccount:${data.google_project.serverless_project.number}-compute@developer.gserviceaccount.com",
     "serviceAccount:${google_project_service_identity.serverless_sa.email}",
   ]
   encrypters = [
-    "serviceAccount:${data.google_project.serverless_project_id.number}-compute@developer.gserviceaccount.com",
+    "serviceAccount:${data.google_project.serverless_project.number}-compute@developer.gserviceaccount.com",
     "serviceAccount:${google_project_service_identity.serverless_sa.email}",
   ]
   prevent_destroy = false
