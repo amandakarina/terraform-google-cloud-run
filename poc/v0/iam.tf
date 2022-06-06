@@ -49,8 +49,8 @@ resource "google_artifact_registry_repository_iam_member" "artifact-registry-iam
 
 resource "google_cloud_run_service_iam_member" "public-access" {
   location = var.location
-  project  = var.project_id
-  service  = var.serverless_project_id
+  project  = var.serverless_project_id
+  service  = var.service_name
   role     = "roles/run.invoker"
   member = "serviceAccount:${var.cloud_run_sa}"
 }
