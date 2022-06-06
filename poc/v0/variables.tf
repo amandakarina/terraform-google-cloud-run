@@ -57,10 +57,6 @@ variable "vpc_project_id" {
   type        = string
 }
 
-variable "project_id" {
-  type        = string
-}
-
 variable "kms_project_id" {
   description = "The project where KMS will be created."
   type        = string
