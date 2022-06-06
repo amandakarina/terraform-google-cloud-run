@@ -14,6 +14,82 @@
  * limitations under the License.
  */
 
+variable "default_rules" {
+    description = "Default rule for cloud armor"
+    default = {
+        default_rule = {
+            action         = "allow"
+            priority       = "2147483647"
+            versioned_expr = "SRC_IPS_V1"
+            src_ip_ranges  = ["*"]
+            description    = "Default allow all rule"
+        }
+    }
+    type = map(object({
+        action         = string
+        priority       = string
+        versioned_expr = string
+        src_ip_ranges  = list(string)
+        description    = string
+    }))
+}
+
+ variable "owasp_rules" {
+     description = "value"
+     default = {
+         rule_sqli = {
+             action = "deny(403)"
+             priority = "1000"
+             expression = "evaluatePreconfiguredExpr('sqli-stable')"
+         }
+         rule_xss = {
+             action = "deny(403)"
+             priority = "1001"
+             expression = "evaluatePreconfiguredExpr('xss-stable')"
+         }
+         rule_lfi = {
+             action = "deny(403)"
+             priority = "1002"
+             expression = "evaluatePreconfiguredExpr('lfi-stable')"
+         }
+         rule_canary = {
+             action = "deny(403)"
+             priority = "1003"
+             expression = "evaluatePreconfiguredExpr('rce-stable')"
+         }
+         rule_rfi = {
+             action = "deny(403)"
+             priority = "1004"
+             expression = "evaluatePreconfiguredExpr('rfi-stable')"
+         }
+        #  rule_methodenforcement = {
+        #      action = "deny(403)"
+        #      priority = "1005"
+        #      expression = "evaluatePreconfiguredExpr('methodenforcement-stable')"
+        #  }
+        #  rule_scandetection = {
+        #      action = "deny(403)"
+        #      priority = "1006"
+        #      expression = "evaluatePreconfiguredExpr('scandetection-stable', ['owasp-crs-v030001-id913101-scandetection', 'owasp-crs-v030001-id913102-scandetection'])"
+        #  }
+        #  rule_protocolattach = {
+        #      action = "deny(403)"
+        #      priority = "1007"
+        #      expression = "evaluatePreconfiguredExpr('protocolattack-stable', ['owasp-crs-v030001-id921151-protocolattack', 'owasp-crs-v030001-id921170-protocolattack'])"
+        #  }
+        #  rule_sessionfixation = {
+        #      action = "deny(403)"
+        #      priority = "1009"
+        #      expression = "evaluatePreconfiguredExpr('sessionfixation-stable')"
+        #  }
+     }
+     type = map(object({
+         action         = string
+         priority       = string
+         expression     = string
+     }))
+ }
+
 variable "region" {
   description = "Location for load balancer and Cloud Run resources"
   default     = "us-central1"
@@ -26,8 +102,9 @@ variable "ssl" {
 }
 
 variable "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
   type        = string
+  default     = "my-domain.com"
 }
 
 variable "lb-name" {
