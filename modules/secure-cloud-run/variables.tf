@@ -98,7 +98,7 @@ variable "keyring_name" {
 }
 
 variable "key_rotation_period" {
-  description = "Period or key rotation in seconds."
+  description = "Period of key rotation in seconds."
   type        = string
   default     = "2592000s"
 }
