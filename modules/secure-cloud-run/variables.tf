@@ -104,9 +104,14 @@ variable "key_rotation_period" {
 }
 
 variable "key_protection_level" {
-  description = "The protection level to use when creating a version based on this template. Default value: \"SOFTWARE\" Possible values: [\"SOFTWARE\", \"HSM\"]"
+  description = "The protection level to use when creating a version based on this template. Possible values: [\"SOFTWARE\", \"HSM\"]"
   type        = string
   default     = "HSM"
+}
+
+variable "ip_cidr_range" {
+  description = "The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported"
+  type        = string
 }
 
 variable "artifact_registry_repository_project_id" {
