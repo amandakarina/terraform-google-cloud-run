@@ -98,13 +98,13 @@ variable "keyring_name" {
 }
 
 variable "key_rotation_period" {
-  description = "Periodo or key rotatin in seconds."
+  description = "Period of key rotation in seconds."
   type        = string
   default     = "2592000s"
 }
 
 variable "key_protection_level" {
-  description = "The protection level to use when creating a version based on this template. Default value: \"SOFTWARE\" Possible values: [\"SOFTWARE\", \"HSM\"]"
+  description = "The protection level to use when creating a version based on this template. Possible values: [\"SOFTWARE\", \"HSM\"]"
   type        = string
   default     = "HSM"
 }
