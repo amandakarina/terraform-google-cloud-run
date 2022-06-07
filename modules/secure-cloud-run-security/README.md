@@ -9,7 +9,7 @@
 | encrypters | List of comma-separated owners for each key declared in set\_encrypters\_for. | `list(string)` | `[]` | no |
 | key\_name | Key name. | `string` | n/a | yes |
 | key\_protection\_level | The protection level to use when creating a version based on this template. Default value: "SOFTWARE" Possible values: ["SOFTWARE", "HSM"] | `string` | `"HSM"` | no |
-| key\_rotation\_period | Periodo or key rotatin in seconds. | `string` | `"2592000s"` | no |
+| key\_rotation\_period | Period or key rotation in seconds. | `string` | `"2592000s"` | no |
 | keyring\_name | Keyring name. | `string` | n/a | yes |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
@@ -21,7 +21,7 @@
 
 | Name | Description |
 |------|-------------|
-| key | Map of key name => key self link. |
+| key | Key self link. |
 | keyring | Self link of the keyring. |
 | keyring\_name | Name of the keyring. |
 | keyring\_resource | Keyring resource. |

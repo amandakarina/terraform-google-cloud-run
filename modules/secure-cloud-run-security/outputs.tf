@@ -15,7 +15,7 @@
  */
 
 output "key" {
-  description = "Map of key name => key self link."
+  description = "Key self link."
   value       = module.cloud_run_kms.keys[var.key_name]
 }
 

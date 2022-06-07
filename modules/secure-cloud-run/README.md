@@ -14,7 +14,7 @@
 | image | Image url to be deployed on Cloud Run. | `string` | n/a | yes |
 | key\_name | The name of KMS Key to be created and used in Cloud Run. | `string` | n/a | yes |
 | key\_protection\_level | The protection level to use when creating a version based on this template. Default value: "SOFTWARE" Possible values: ["SOFTWARE", "HSM"] | `string` | `"HSM"` | no |
-| key\_rotation\_period | Periodo or key rotatin in seconds. | `string` | `"2592000s"` | no |
+| key\_rotation\_period | Period or key rotation in seconds. | `string` | `"2592000s"` | no |
 | keyring\_name | Keyring name. | `string` | n/a | yes |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
