@@ -32,9 +32,9 @@ A service account with the following roles must be used to provision
 the resources of this module:
 
 * KMS Project
-  * Cloud KMS Admin - `roles/cloudkms.admin`
+  * Cloud KMS Admin: `roles/cloudkms.admin`
 * Serverless Project
-  * Organization Policy Administrator - `roles/orgpolicy.policyAdmin`
+  * Organization Policy Administrator: `roles/orgpolicy.policyAdmin`
 
 ## Usage
 
