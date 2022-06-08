@@ -20,42 +20,39 @@ The following dependencies must be available:
 
 ### APIs
 
-A project with the following APIs enabled must be used to host the
+The Serverless and Network project with the following APIs enabled must be used to host the
 resources of this module:
 
-* Google Cloud Key Management Service: `cloudkms.googleapis.com`
+* Google VPC Access API: `vpcaccess.googleapis.com`
+* Compute API: `compute.googleapis.com`
 
 ### Service Account
 
 A service account with one of the following roles must be used to provision
 the resources of this module:
 
-* Network Admin: `roles/compute.networkAdmin`
-* 
+* Network Project
+  * Compute Shared VPC Admin: `roles/compute.xpnAdmin`
+  * Network Admin: `roles/compute.networkAdmin`
+  * Security Admin: `roles/compute.securityAdmin`
+  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
+* Serverless Project
+  * Security Admin: `roles/compute.securityAdmin`
+  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
 
 ## Usage
 
 ```hcl
-module "cloud_run_security" {
-  source = "../secure-cloud-run-security"
+module "cloud_run_network" {
+  source = "../secure-cloud-run-net"
 
-  kms_project_id        = <KMS PROJECT ID>
-  location              = <KMS LOCATION>
-  serverless_project_id = <SERVERLESS PROJECT ID>
-  key_name              = <KEY NAME>
-  keyring_name          = <KEYRING NAME>
-  key_rotation_period   = <KEY ROTATION PERIOD>
-  key_protection_level  = <KEY PROTECTION LEVEL>
-
-  encrypters = [
-    "serviceAccount:<SERVERLESS IDENTITY EMAIL>",
-    "serviceAccount:<CLOUD RUN SERVICE ACCOUNT>"
-  ]
-
-  decrypters = [
-    "serviceAccount:<SERVERLESS IDENTITY EMAIL>",
-    "serviceAccount:<CLOUD RUN SERVICE ACCOUNT>"
-  ]
+  connector_name            = <CONNECTOR NAME>
+  subnet_name               = <SUBNETWORK NAME>
+  location                  = <SUBNETWORK LOCATION>
+  vpc_project_id            = <VPC PROJECT ID>
+  serverless_project_id     = <SERVERLESS PROJECT ID>
+  shared_vpc_name           = <SHARED VPC NAME>
+  ip_cidr_range             = <IP CIDR RANGE>
 }
 ```
 
