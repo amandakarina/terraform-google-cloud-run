@@ -24,15 +24,18 @@ The following dependencies must be available:
 A project with the following APIs enabled must be used to host the
 resources of this module:
 
-* Google Cloud Key Management Service: `cloudkms.googleapis.com`
+* KMS Project
+  * Google Cloud Key Management Service: `cloudkms.googleapis.com`
 
 ### Service Account
 
 A service account with one of the following roles must be used to provision
 the resources of this module:
 
-* Cloud KMS Admin - `roles/cloudkms.admin`
-* Organization Policy Administrator - `roles/orgpolicy.policyAdmin`
+* KMS Project
+  * Cloud KMS Admin - `roles/cloudkms.admin`
+* Serverless Project
+  * Organization Policy Administrator - `roles/orgpolicy.policyAdmin`
 
 ## Usage
 
