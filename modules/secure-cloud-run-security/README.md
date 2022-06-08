@@ -4,8 +4,7 @@ This module handles the basic deployment security configurations for Cloud Run u
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-* Creates KMS Keyring in the **KMS Project**.
-* Creates KMS Key in the **KMS Project**.
+* Creates KMS Keyring and Key for [customer managed encryption keys](https://cloud.google.com/run/docs/securing/using-cmek) in the **KMS Project**.
 * Enables Organization Policies related to Cloud Run in the **Serverless Project**.
   * Allow Ingress only from internal and Cloud Load Balancing.
   * Allow VPC Egress to Private Ranges Only.
@@ -29,7 +28,7 @@ resources of this module:
 
 ### Service Account
 
-A service account with one of the following roles must be used to provision
+A service account with the following roles must be used to provision
 the resources of this module:
 
 * KMS Project
