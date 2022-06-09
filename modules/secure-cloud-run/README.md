@@ -19,7 +19,7 @@
 | keyring\_name | Keyring name. | `string` | n/a | yes |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
-| members | Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users.` | `list(string)` | `[]` | no |
+| members | Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and`user:`for users.` | `list(string)` | `[]` | no |
 | prevent\_destroy | Set the `prevent_destroy` lifecycle attribute on the Cloud KMS key. | `bool` | `true` | no |
 | serverless\_project\_id | The project to deploy the cloud run service. | `string` | n/a | yes |
 | service\_name | Shared VPC name. | `string` | n/a | yes |
