@@ -61,7 +61,7 @@ resource "google_compute_firewall" "vpc_connector_to_serverless" {
 
   allow {
     protocol = "tcp"
-    ports    = ["667"]
+    ports    = ["667", "80"]
   }
 
   allow {
