@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+output "load-balancer-ip" {
+  value = module.lb-http.external_ip
+}
+
 output "service_name" {
   value       = module.cloud_run.service_name
   description = "Name of the created service"
