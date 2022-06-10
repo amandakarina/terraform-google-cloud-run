@@ -128,3 +128,9 @@ variable "artifact_registry_repository_name" {
   description = "Artifact Registry Repository name to grant serverless identity viewer role"
   type        = string
 }
+
+variable "use_artifact_registry_image" {
+  description = "When true it will give permission to read an image from your artifact registry."
+  type        = bool
+  default     = false
+}
