@@ -73,10 +73,10 @@ resource "google_compute_firewall" "vpc_connector_to_serverless" {
 resource "google_compute_firewall" "vpc_connector_to_lb" {
   count = var.connector_on_host_project ? 0 : 1
 
-  project       = var.vpc_project_id
-  name          = "vpc-connector-to-lb"
-  network       = var.shared_vpc_name
-  direction     = "EGRESS"
+  project     = var.vpc_project_id
+  name        = "vpc-connector-to-lb"
+  network     = var.shared_vpc_name
+  direction   = "EGRESS"
   target_tags = ["vpc-connector"]
 
   log_config {
