@@ -41,3 +41,4 @@ module "cloudrun_allowed_vpc_egress" {
     module.cloud_run
   ]
 }
+

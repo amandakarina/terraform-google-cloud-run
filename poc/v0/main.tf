@@ -14,9 +14,27 @@
  * limitations under the License.
  */
 
- locals {
-  serverless_apis = ["vpcaccess.googleapis.com", "compute.googleapis.com", "container.googleapis.com", "run.googleapis.com", "cloudkms.googleapis.com"]
-  vpc_apis        = ["vpcaccess.googleapis.com", "container.googleapis.com"]
+locals {
+  serverless_apis = [
+	"vpcaccess.googleapis.com", 
+	"compute.googleapis.com", 
+	"container.googleapis.com", 
+	"run.googleapis.com", 
+	"cloudkms.googleapis.com", 
+	"artifactregistry.googleapis.com"
+  ]
+
+  vpc_apis = [
+	"vpcaccess.googleapis.com", 
+	"container.googleapis.com"
+  ]
+}
+
+resource "google_project_service_identity" "vpcaccess_identity_sa" {
+  provider = google-beta
+
+  project = var.serverless_project_id
+  service = "vpcaccess.googleapis.com"
 }
 
 resource "google_project_service" "serverless_project_apis" {
@@ -26,7 +44,7 @@ resource "google_project_service" "serverless_project_apis" {
   disable_on_destroy = false
 }
 
-resource "google_project_service" "vpc_project_id_apis" {
+resource "google_project_service" "vpc_project_apis" {
   for_each           = toset(local.vpc_apis)
   project            = var.vpc_project_id
   service            = each.value
@@ -39,7 +57,7 @@ resource "google_project_service" "vpc_project_id_apis" {
   service  = "run.googleapis.com"
 }
 
-data "google_project" "serverless_project_id" {
+data "google_project" "serverless_project" {
     project_id = var.serverless_project_id
 }
 
@@ -47,7 +65,7 @@ module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
   version = "~> 0.3.0"
 
-  service_name          = "hello-world-with-apis-test"
+  service_name          = var.service_name
   project_id            = var.serverless_project_id
   location              = var.location
   image                 = var.image
@@ -61,9 +79,13 @@ module "cloud_run" {
 
   encryption_key = module.cloud_run_kms.keys["cloud_run"]
 
-  env_vars = [{ name : "PROJECT_ID", value : var.serverless_project_id }]
+  env_vars = [{ 
+	name : "PROJECT_ID", 
+	value : var.serverless_project_id
+  }]
 
   depends_on = [
     module.serverless-connector
   ]
 }
+

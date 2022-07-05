@@ -14,6 +14,84 @@
  * limitations under the License.
  */
 
+variable "default_rules" {
+    description = "Default rule for cloud armor"
+    default = {
+        default_rule = {
+            action         = "allow"
+            priority       = "2147483647"
+            versioned_expr = "SRC_IPS_V1"
+            src_ip_ranges  = ["*"]
+            description    = "Default allow all rule"
+        }
+    }
+    type = map(object({
+        action         = string
+        priority       = string
+        versioned_expr = string
+        src_ip_ranges  = list(string)
+        description    = string
+    }))
+}
+
+ variable "owasp_rules" {
+     description = "value"
+     default = {
+         rule_sqli = {
+             action = "deny(403)"
+             priority = "1000"
+             expression = "evaluatePreconfiguredExpr('sqli-stable')"
+         }
+         rule_xss = {
+             action = "deny(403)"
+             priority = "1001"
+             expression = "evaluatePreconfiguredExpr('xss-stable')"
+         }
+         rule_lfi = {
+             action = "deny(403)"
+             priority = "1002"
+             expression = "evaluatePreconfiguredExpr('lfi-stable')"
+         }
+         rule_canary = {
+             action = "deny(403)"
+             priority = "1003"
+             expression = "evaluatePreconfiguredExpr('rce-stable')"
+         }
+         rule_rfi = {
+             action = "deny(403)"
+             priority = "1004"
+             expression = "evaluatePreconfiguredExpr('rfi-stable')"
+         }
+     }
+     type = map(object({
+         action         = string
+         priority       = string
+         expression     = string
+     }))
+ }
+
+variable "region" {
+  description = "Location for load balancer and Cloud Run resources"
+  default     = "us-central1"
+}
+
+variable "ssl" {
+  description = "Run load balancer on HTTPS and provision managed certificate with provided `domain`."
+  type        = bool
+  default     = true
+}
+
+variable "domain" {
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
+  type        = string
+  default     = "rudnickirenatolb.tk"
+}
+
+variable "lb-name" {
+  description = "Name for load balancer and associated resources"
+  default     = "run-lb"
+}
+
 variable "terraform_service_account" {
   description = "The email address of the service account that will run the Terraform code."
   type        = string
@@ -23,6 +101,12 @@ variable "location" {
   description = "The location where resources are going to be deployed."
   type        = string
   default     = "us-central1"
+}
+
+variable "service_name" {
+  description = "Name for Cloud Run service."
+  type = string
+  default = "hello-world-with-apis-test"
 }
 
 variable "vpc_project_id" {
@@ -69,3 +153,4 @@ variable "cloud_run_sa" {
     description = "Service account to be used on Cloud Run."
     type = string
 }
+
