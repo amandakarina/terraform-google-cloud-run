@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
-output "project_number" {
-  value = data.google_project.kms_project_id.number
+output "key" {
+  description = "Key self link."
+  value       = module.cloud_run_kms.keys[var.key_name]
 }
 
-output "ar_account" {
-  value = google_project_service_identity.kms_sa.email
+output "keyring" {
+  description = "Self link of the keyring."
+  value       = module.cloud_run_kms.keyring
+}
+
+output "keyring_name" {
+  description = "Name of the keyring."
+  value       = module.cloud_run_kms.keyring_name
+}
+
+output "keyring_resource" {
+  description = "Keyring resource."
+  value       = module.cloud_run_kms.keyring_resource
 }

@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-output "project_number" {
-  value = data.google_project.kms_project_id.number
+provider "google" {
+  impersonate_service_account = var.terraform_service_account
+  request_timeout             = "60s"
 }
 
-output "ar_account" {
-  value = google_project_service_identity.kms_sa.email
+provider "google-beta" {
+  impersonate_service_account = var.terraform_service_account
+  request_timeout             = "60s"
 }

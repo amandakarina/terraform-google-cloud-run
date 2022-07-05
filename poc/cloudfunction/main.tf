@@ -61,16 +61,16 @@ resource "google_artifact_registry_repository" "my-repo" {
  kms_key_name = var.kms_key_name
 }
 
-data "google_project" "kms_project" {
+data "google_project" "kms_project_id" {
   project_id = var.cloudfunction_project_id
 }
 resource "google_project_service_identity" "kms_sa" {
   provider = google-beta
-  project = data.google_project.kms_project.project_id
+  project = data.google_project.kms_project_id.project_id
   service = "artifactregistry.googleapis.com"
 }
 resource "google_project_iam_member" "kms_sa_EncrypterDecrypter" {
-  project = var.kms_project_id
+  project = var.kms_project_id_id
   role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member  = "serviceAccount:${google_project_service_identity.kms_sa.email}"
 }

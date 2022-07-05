@@ -14,10 +14,25 @@
  * limitations under the License.
  */
 
-output "project_number" {
-  value = data.google_project.kms_project_id.number
-}
+terraform {
+  required_version = ">= 0.13"
 
-output "ar_account" {
-  value = google_project_service_identity.kms_sa.email
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.53, < 5.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = ">= 3.53, < 5.0"
+    }
+  }
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-cloud-run-net/v0.3.0"
+  }
+
+  provider_meta "google-beta" {
+    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-cloud-run-net/v0.3.0"
+  }
 }

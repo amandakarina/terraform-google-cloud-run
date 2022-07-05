@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-output "project_number" {
-  value = data.google_project.kms_project_id.number
-}
-
-output "ar_account" {
-  value = google_project_service_identity.kms_sa.email
+output "connector_id" {
+  value       = tolist(module.serverless_connector.connector_ids)[0]
+  description = "VPC serverless connector ID."
 }

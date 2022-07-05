@@ -13,11 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-output "project_number" {
-  value = data.google_project.kms_project_id.number
-}
-
-output "ar_account" {
-  value = google_project_service_identity.kms_sa.email
-}

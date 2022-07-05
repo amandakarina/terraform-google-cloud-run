@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
-output "project_number" {
-  value = data.google_project.kms_project_id.number
+output "connector_id" {
+  description = "VPC serverless connector ID."
+  value       = module.cloud_run_network.connector_id
 }
 
-output "ar_account" {
-  value = google_project_service_identity.kms_sa.email
+output "keyring" {
+  description = "Name of the Cloud KMS keyring."
+  value       = module.cloud_run_security.keyring_name
+}
+
+output "keys" {
+  description = "Name of the Cloud KMS crypto key"
+  value       = module.cloud_run_security.key
+}
+
+output "service_name" {
+  value       = module.cloud_run_core.service_name
+  description = "Name of the created service"
 }
