@@ -1,5 +1,5 @@
 # Local .terraform directories
-**/.terraform/*
+**.terraform*
 
 # Local tfvars terraform.tfvars
 **/terraform.tfvars
@@ -10,6 +10,7 @@
 *.tfstate
 *.tfstate.*
 *.lock.hcl
+*.tfvars*
 
 # Crash log files
 crash.log
