@@ -14,10 +14,87 @@
  * limitations under the License.
  */
 
+variable "default_rules" {
+  description = "Default rule for Cloud Armor."
+  default = {
+    default_rule = {
+      action         = "allow"
+      priority       = "2147483647"
+      versioned_expr = "SRC_IPS_V1"
+      src_ip_ranges  = ["*"]
+      description    = "Default allow all rule"
+    }
+  }
+  type = map(object({
+    action         = string
+    priority       = string
+    versioned_expr = string
+    src_ip_ranges  = list(string)
+    description    = string
+  }))
+}
+
+variable "owasp_rules" {
+  description = "Preconfigured rules for XSS, SQLi, LFI, RFI, and RCE."
+  default = {
+    rule_sqli = {
+      action     = "deny(403)"
+      priority   = "1000"
+      expression = "evaluatePreconfiguredExpr('sqli-stable')"
+    }
+    rule_xss = {
+      action     = "deny(403)"
+      priority   = "1001"
+      expression = "evaluatePreconfiguredExpr('xss-stable')"
+    }
+    rule_lfi = {
+      action     = "deny(403)"
+      priority   = "1002"
+      expression = "evaluatePreconfiguredExpr('lfi-stable')"
+    }
+    rule_canary = {
+      action     = "deny(403)"
+      priority   = "1003"
+      expression = "evaluatePreconfiguredExpr('rce-stable')"
+    }
+    rule_rfi = {
+      action     = "deny(403)"
+      priority   = "1004"
+      expression = "evaluatePreconfiguredExpr('rfi-stable')"
+    }
+  }
+  type = map(object({
+    action     = string
+    priority   = string
+    expression = string
+  }))
+}
+
+variable "region" {
+  description = "Location for load balancer and Cloud Run resources."
+  type        = string
+}
+
+variable "ssl" {
+  description = "Run load balancer on HTTPS and provision managed certificate with provided `domain`."
+  type        = bool
+  default     = true
+}
+
+variable "domain" {
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
+  type        = string
+  default     = "my-domain.com"
+}
+
+variable "lb_name" {
+  description = "Name for load balancer and associated resources."
+  default     = "tf-cr-lb"
+}
+
 variable "location" {
   description = "The location where resources are going to be deployed."
   type        = string
-  default     = "us-central1"
 }
 
 variable "serverless_project_id" {
@@ -26,12 +103,12 @@ variable "serverless_project_id" {
 }
 
 variable "service_name" {
-  description = "Shared VPC name."
+  description = "The name of the Cloud Run service to create."
   type        = string
 }
 
 variable "image" {
-  description = "Image url to be deployed on Cloud Run."
+  description = "GCR hosted image URL to deploy."
   type        = string
 }
 
@@ -41,7 +118,7 @@ variable "cloud_run_sa" {
 }
 
 variable "vpc_connector_id" {
-  description = "VPC Connector id."
+  description = "VPC Connector id in the forma projects/PROJECT/locations/LOCATION/connectors/NAME."
   type        = string
 }
 
@@ -55,12 +132,12 @@ variable "env_vars" {
     value = string
     name  = string
   }))
-  description = "Environment variables (cleartext)"
+  description = "Environment variables (cleartext)."
   default     = []
 }
 
 variable "members" {
   type        = list(string)
-  description = "Users/SAs to be given invoker access to the service"
+  description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
   default     = []
 }

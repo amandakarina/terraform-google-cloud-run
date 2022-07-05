@@ -21,12 +21,12 @@ module "cloud_run_kms" {
   project_id           = var.kms_project_id
   location             = var.location
   keyring              = var.keyring_name
-  keys                 = var.keys
-  set_decrypters_for   = var.set_decrypters_for
-  set_encrypters_for   = var.set_encrypters_for
+  keys                 = [var.key_name]
+  set_decrypters_for   = length(var.decrypters) > 0 ? [var.key_name] : []
+  set_encrypters_for   = length(var.encrypters) > 0 ? [var.key_name] : []
   decrypters           = var.decrypters
   encrypters           = var.encrypters
-  set_owners_for       = var.set_owners_for
+  set_owners_for       = length(var.owners) > 0 ? [var.key_name] : []
   owners               = var.owners
   prevent_destroy      = var.prevent_destroy
   key_rotation_period  = var.key_rotation_period

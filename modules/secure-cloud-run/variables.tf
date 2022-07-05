@@ -18,16 +18,15 @@
 variable "location" {
   description = "The location where resources are going to be deployed."
   type        = string
-  default     = "us-central1"
 }
 
 variable "serverless_project_id" {
-  description = "The project where cloud run is going to be deployed."
+  description = "The project to deploy the cloud run service."
   type        = string
 }
 
 variable "vpc_project_id" {
-  description = "The project where shared vpc is."
+  description = "The host project for the shared vpc."
   type        = string
 }
 
@@ -57,18 +56,18 @@ variable "cloud_run_sa" {
 }
 
 variable "connector_name" {
-  description = "The email address of the service account that will run the Terraform code."
+  description = "The name for the connector to be created."
   type        = string
 }
 
 variable "subnet_name" {
-  description = "Subnet name to be re-used."
+  description = "Subnet name to be re-used to create Serverless Connector."
   type        = string
   default     = null
 }
 
 variable "shared_vpc_name" {
-  description = "Shared VPC name which is going to be used."
+  description = "Shared VPC name which is going to be re-used to create Serverless Connector."
   type        = string
 }
 
@@ -83,12 +82,12 @@ variable "env_vars" {
 
 variable "members" {
   type        = list(string)
-  description = "Users/SAs to be given invoker access to the service"
+  description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
   default     = []
 }
 
 variable "prevent_destroy" {
-  description = "Set the prevent_destroy lifecycle attribute on keys.."
+  description = "Set the `prevent_destroy` lifecycle attribute on the Cloud KMS key."
   type        = bool
   default     = true
 }
@@ -99,28 +98,39 @@ variable "keyring_name" {
 }
 
 variable "key_rotation_period" {
-  description = "Periodo or key rotatin in seconds."
+  description = "Period of key rotation in seconds."
   type        = string
-  default     = "100000s"
+  default     = "2592000s"
 }
 
 variable "key_protection_level" {
-  description = "The protection level to use when creating a version based on this template. Default value: \"SOFTWARE\" Possible values: [\"SOFTWARE\", \"HSM\"]"
+  description = "The protection level to use when creating a version based on this template. Possible values: [\"SOFTWARE\", \"HSM\"]"
   type        = string
-  default     = "SOFTWARE"
+  default     = "HSM"
 }
 
-variable "artifact_repository_project" {
-  description = "Artifact Repository Project to grant serverless identity viewer role."
-  type        = string
-}
-
-variable "artifact_repository_location" {
-  description = "Artifact Repository location to grant serverless identity viewer role."
+variable "ip_cidr_range" {
+  description = "The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported"
   type        = string
 }
 
-variable "artifact_repository_name" {
-  description = "Artifact Repository name to grant serverless identity viewer role"
+variable "artifact_registry_repository_project_id" {
+  description = "Artifact Registry Repository Project ID to grant serverless identity viewer role."
   type        = string
+}
+
+variable "artifact_registry_repository_location" {
+  description = "Artifact Registry Repository location to grant serverless identity viewer role."
+  type        = string
+}
+
+variable "artifact_registry_repository_name" {
+  description = "Artifact Registry Repository name to grant serverless identity viewer role"
+  type        = string
+}
+
+variable "use_artifact_registry_image" {
+  description = "When true it will give permission to read an image from your artifact registry."
+  type        = bool
+  default     = false
 }

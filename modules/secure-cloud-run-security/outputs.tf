@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-output "keys" {
-  description = "Map of key name => key self link."
-  value       = module.cloud_run_kms.keys
+output "key" {
+  description = "Key self link."
+  value       = module.cloud_run_kms.keys[var.key_name]
 }
 
 output "keyring" {
