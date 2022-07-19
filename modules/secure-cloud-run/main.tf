@@ -115,6 +115,7 @@ module "cloud_run_core" {
   encryption_key        = module.cloud_run_security.key
   env_vars              = var.env_vars
   members               = var.members
+  region                = var.region
 
   depends_on = [
     google_project_service.serverless_project_apis,
