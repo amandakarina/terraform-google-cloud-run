@@ -19,17 +19,22 @@ output "connector_id" {
   value       = module.cloud_run_network.connector_id
 }
 
-output "keyring" {
+output "keyring_self_link" {
   description = "Name of the Cloud KMS keyring."
-  value       = module.cloud_run_security.keyring_name
+  value       = module.cloud_run_security.keyring_self_link
 }
 
-output "keys" {
-  description = "Name of the Cloud KMS crypto key"
-  value       = module.cloud_run_security.key
+output "key_self_link" {
+  description = "Name of the Cloud KMS crypto key."
+  value       = module.cloud_run_security.key_self_link
 }
 
-output "service_name" {
-  value       = module.cloud_run_core.service_name
-  description = "Name of the created service"
+output "service_id" {
+  value       = module.cloud_run_core.service_id
+  description = "ID of the created service."
+}
+
+output "service_url" {
+  value       = module.cloud_run_core.service_url
+  description = "Url of the created service."
 }

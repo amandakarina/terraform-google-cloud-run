@@ -19,7 +19,7 @@ module "cloud_run" {
   version = "~> 0.3.0"
 
   service_name          = var.service_name
-  project_id            = var.serverless_project_id
+  project_id            = var.project_id
   location              = var.location
   image                 = var.image
   service_account_email = var.cloud_run_sa
@@ -32,8 +32,8 @@ module "cloud_run" {
   }
 
   template_annotations = {
-    "autoscaling.knative.dev/maxScale" : 2,
-    "autoscaling.knative.dev/minScale" : 1,
+    "autoscaling.knative.dev/maxScale"        = 2,
+    "autoscaling.knative.dev/minScale"        = 1,
     "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
     "run.googleapis.com/vpc-access-egress"    = "private-ranges-only"
   }

@@ -35,32 +35,47 @@ variable "default_rules" {
 }
 
 variable "owasp_rules" {
-  description = "Preconfigured rules for XSS, SQLi, LFI, RFI, and RCE."
+  description = "These are additional Cloud Armor rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation (requires Cloud Armor default_rule)."
   default = {
     rule_sqli = {
       action     = "deny(403)"
       priority   = "1000"
-      expression = "evaluatePreconfiguredExpr('sqli-stable')"
+      expression = "evaluatePreconfiguredExpr('sqli-v33-stable')"
     }
     rule_xss = {
       action     = "deny(403)"
       priority   = "1001"
-      expression = "evaluatePreconfiguredExpr('xss-stable')"
+      expression = "evaluatePreconfiguredExpr('xss-v33-stable')"
     }
     rule_lfi = {
       action     = "deny(403)"
       priority   = "1002"
-      expression = "evaluatePreconfiguredExpr('lfi-stable')"
+      expression = "evaluatePreconfiguredExpr('lfi-v33-stable')"
     }
     rule_canary = {
       action     = "deny(403)"
       priority   = "1003"
-      expression = "evaluatePreconfiguredExpr('rce-stable')"
+      expression = "evaluatePreconfiguredExpr('rce-v33-stable')"
     }
     rule_rfi = {
       action     = "deny(403)"
       priority   = "1004"
-      expression = "evaluatePreconfiguredExpr('rfi-stable')"
+      expression = "evaluatePreconfiguredExpr('rfi-v33-stable')"
+    }
+    rule_scannerdetection = {
+      action     = "deny(403)"
+      priority   = "1005"
+      expression = "evaluatePreconfiguredExpr('scannerdetection-v33-stable')"
+    }
+    rule_protocolattack = {
+      action     = "deny(403)"
+      priority   = "1006"
+      expression = "evaluatePreconfiguredExpr('protocolattack-v33-stable')"
+    }
+    rule_sessionfixation = {
+      action     = "deny(403)"
+      priority   = "1007"
+      expression = "evaluatePreconfiguredExpr('sessionfixation-v33-stable')"
     }
   }
   type = map(object({
@@ -97,7 +112,7 @@ variable "location" {
   type        = string
 }
 
-variable "serverless_project_id" {
+variable "project_id" {
   description = "The project where cloud run is going to be deployed."
   type        = string
 }
@@ -108,7 +123,7 @@ variable "service_name" {
 }
 
 variable "image" {
-  description = "GCR hosted image URL to deploy."
+  description = "GAR hosted image URL to deploy."
   type        = string
 }
 
@@ -118,7 +133,7 @@ variable "cloud_run_sa" {
 }
 
 variable "vpc_connector_id" {
-  description = "VPC Connector id in the forma projects/PROJECT/locations/LOCATION/connectors/NAME."
+  description = "VPC Connector id in the format projects/PROJECT/locations/LOCATION/connectors/NAME."
   type        = string
 }
 
@@ -132,7 +147,7 @@ variable "env_vars" {
     value = string
     name  = string
   }))
-  description = "Environment variables (cleartext)."
+  description = "Environment variables."
   default     = []
 }
 

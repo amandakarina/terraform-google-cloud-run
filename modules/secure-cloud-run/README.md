@@ -34,8 +34,9 @@
 | Name | Description |
 |------|-------------|
 | connector\_id | VPC serverless connector ID. |
-| keyring | Name of the Cloud KMS keyring. |
-| keys | Name of the Cloud KMS crypto key |
-| service\_name | Name of the created service |
+| key\_self\_link | Name of the Cloud KMS crypto key. |
+| keyring\_self\_link | Name of the Cloud KMS keyring. |
+| service\_id | ID of the created service. |
+| service\_url | Url of the created service. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
