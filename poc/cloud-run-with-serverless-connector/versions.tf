@@ -14,10 +14,25 @@
  * limitations under the License.
  */
 
-const functions = require('@google-cloud/functions-framework');
-const escapeHtml = require('escape-html');
+terraform {
+  required_version = ">= 0.13"
 
-// HTTP Cloud Function.
-functions.http('helloHttp', (req, res) => {
-  res.send(`Hello ${escapeHtml(req.query.name || req.body.name || 'World')}!`);
-});
+  required_providers {
+
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 3.77"
+    }
+
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 3.77"
+    }
+
+    time = {
+      source  = "hashicorp/time"
+      version = "~> 0.7"
+    }
+
+  }
+}

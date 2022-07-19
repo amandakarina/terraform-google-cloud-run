@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-const functions = require('@google-cloud/functions-framework');
-const escapeHtml = require('escape-html');
+ provider "google" {
+  impersonate_service_account = var.terraform_service_account
+  request_timeout             = "60s"
+}
 
-// HTTP Cloud Function.
-functions.http('helloHttp', (req, res) => {
-  res.send(`Hello ${escapeHtml(req.query.name || req.body.name || 'World')}!`);
-});
+provider "google-beta" {
+  impersonate_service_account = var.terraform_service_account
+  request_timeout             = "60s"
+}
