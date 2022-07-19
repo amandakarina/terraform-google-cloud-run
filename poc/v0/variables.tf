@@ -15,60 +15,60 @@
  */
 
 variable "default_rules" {
-    description = "Default rule for cloud armor"
-    default = {
-        default_rule = {
-            action         = "allow"
-            priority       = "2147483647"
-            versioned_expr = "SRC_IPS_V1"
-            src_ip_ranges  = ["*"]
-            description    = "Default allow all rule"
-        }
+  description = "Default rule for cloud armor"
+  default = {
+    default_rule = {
+      action         = "allow"
+      priority       = "2147483647"
+      versioned_expr = "SRC_IPS_V1"
+      src_ip_ranges  = ["*"]
+      description    = "Default allow all rule"
     }
-    type = map(object({
-        action         = string
-        priority       = string
-        versioned_expr = string
-        src_ip_ranges  = list(string)
-        description    = string
-    }))
+  }
+  type = map(object({
+    action         = string
+    priority       = string
+    versioned_expr = string
+    src_ip_ranges  = list(string)
+    description    = string
+  }))
 }
 
- variable "owasp_rules" {
-     description = "value"
-     default = {
-         rule_sqli = {
-             action = "deny(403)"
-             priority = "1000"
-             expression = "evaluatePreconfiguredExpr('sqli-stable')"
-         }
-         rule_xss = {
-             action = "deny(403)"
-             priority = "1001"
-             expression = "evaluatePreconfiguredExpr('xss-stable')"
-         }
-         rule_lfi = {
-             action = "deny(403)"
-             priority = "1002"
-             expression = "evaluatePreconfiguredExpr('lfi-stable')"
-         }
-         rule_canary = {
-             action = "deny(403)"
-             priority = "1003"
-             expression = "evaluatePreconfiguredExpr('rce-stable')"
-         }
-         rule_rfi = {
-             action = "deny(403)"
-             priority = "1004"
-             expression = "evaluatePreconfiguredExpr('rfi-stable')"
-         }
-     }
-     type = map(object({
-         action         = string
-         priority       = string
-         expression     = string
-     }))
- }
+variable "owasp_rules" {
+  description = "value"
+  default = {
+    rule_sqli = {
+      action     = "deny(403)"
+      priority   = "1000"
+      expression = "evaluatePreconfiguredExpr('sqli-stable')"
+    }
+    rule_xss = {
+      action     = "deny(403)"
+      priority   = "1001"
+      expression = "evaluatePreconfiguredExpr('xss-stable')"
+    }
+    rule_lfi = {
+      action     = "deny(403)"
+      priority   = "1002"
+      expression = "evaluatePreconfiguredExpr('lfi-stable')"
+    }
+    rule_canary = {
+      action     = "deny(403)"
+      priority   = "1003"
+      expression = "evaluatePreconfiguredExpr('rce-stable')"
+    }
+    rule_rfi = {
+      action     = "deny(403)"
+      priority   = "1004"
+      expression = "evaluatePreconfiguredExpr('rfi-stable')"
+    }
+  }
+  type = map(object({
+    action     = string
+    priority   = string
+    expression = string
+  }))
+}
 
 variable "region" {
   description = "Location for load balancer and Cloud Run resources"
@@ -105,8 +105,8 @@ variable "location" {
 
 variable "service_name" {
   description = "Name for Cloud Run service."
-  type = string
-  default = "hello-world-with-apis-test"
+  type        = string
+  default     = "hello-world-with-apis-test"
 }
 
 variable "vpc_project_id" {
@@ -150,7 +150,7 @@ variable "artifact_repository_name" {
 }
 
 variable "cloud_run_sa" {
-    description = "Service account to be used on Cloud Run."
-    type = string
+  description = "Service account to be used on Cloud Run."
+  type        = string
 }
 

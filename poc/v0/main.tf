@@ -16,17 +16,17 @@
 
 locals {
   serverless_apis = [
-	"vpcaccess.googleapis.com", 
-	"compute.googleapis.com", 
-	"container.googleapis.com", 
-	"run.googleapis.com", 
-	"cloudkms.googleapis.com", 
-	"artifactregistry.googleapis.com"
+    "vpcaccess.googleapis.com",
+    "compute.googleapis.com",
+    "container.googleapis.com",
+    "run.googleapis.com",
+    "cloudkms.googleapis.com",
+    "artifactregistry.googleapis.com"
   ]
 
   vpc_apis = [
-	"vpcaccess.googleapis.com", 
-	"container.googleapis.com"
+    "vpcaccess.googleapis.com",
+    "container.googleapis.com"
   ]
 }
 
@@ -51,14 +51,14 @@ resource "google_project_service" "vpc_project_apis" {
   disable_on_destroy = false
 }
 
- resource "google_project_service_identity" "serverless_sa" {
+resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
   project  = var.serverless_project_id
   service  = "run.googleapis.com"
 }
 
 data "google_project" "serverless_project" {
-    project_id = var.serverless_project_id
+  project_id = var.serverless_project_id
 }
 
 module "cloud_run" {
@@ -79,9 +79,9 @@ module "cloud_run" {
 
   encryption_key = module.cloud_run_kms.keys["cloud_run"]
 
-  env_vars = [{ 
-	name : "PROJECT_ID", 
-	value : var.serverless_project_id
+  env_vars = [{
+    name : "PROJECT_ID",
+    value : var.serverless_project_id
   }]
 
   depends_on = [

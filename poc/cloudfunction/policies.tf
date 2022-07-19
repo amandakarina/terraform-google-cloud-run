@@ -14,52 +14,52 @@
  * limitations under the License.
  */
 
- module "cloudfunctions_allowed_ingress_settings" {
-   source            = "terraform-google-modules/org-policy/google"
-   version           = "~> 4.0"
-   constraint        = "cloudfunctions.allowedIngressSettings"
-   policy_for        = "project"
-   project_id        = var.cloudfunction_project_id
-   policy_type       = "list"
-   allow             = ["is:ALLOW_INTERNAL_ONLY"]
- }
+module "cloudfunctions_allowed_ingress_settings" {
+  source      = "terraform-google-modules/org-policy/google"
+  version     = "~> 4.0"
+  constraint  = "cloudfunctions.allowedIngressSettings"
+  policy_for  = "project"
+  project_id  = var.cloudfunction_project_id
+  policy_type = "list"
+  allow       = ["is:ALLOW_INTERNAL_ONLY"]
+}
 
- module "cloudfunctions_required_vpc_connector" {
-   source      = "terraform-google-modules/org-policy/google"
-   version     = "~> 4.0"
-   policy_for  = "project"
-   project_id  = var.cloudfunction_project_id
-   constraint  = "constraints/cloudfunctions.requireVPCConnector"
-   policy_type = "boolean"
-   enforce     = true
- }
+module "cloudfunctions_required_vpc_connector" {
+  source      = "terraform-google-modules/org-policy/google"
+  version     = "~> 4.0"
+  policy_for  = "project"
+  project_id  = var.cloudfunction_project_id
+  constraint  = "constraints/cloudfunctions.requireVPCConnector"
+  policy_type = "boolean"
+  enforce     = true
+}
 
- module "cloudfunctions_allowed_vpc_connector_egress" {
-   source      = "terraform-google-modules/org-policy/google"
-   version     = "~> 4.0"
-   policy_for  = "project"
-   project_id  = var.cloudfunction_project_id
-   constraint  = "cloudfunctions.allowedVpcConnectorEgressSettings"
-   policy_type = "list"
-   allow       = ["is:ALL_TRAFFIC"]
- }
+module "cloudfunctions_allowed_vpc_connector_egress" {
+  source      = "terraform-google-modules/org-policy/google"
+  version     = "~> 4.0"
+  policy_for  = "project"
+  project_id  = var.cloudfunction_project_id
+  constraint  = "cloudfunctions.allowedVpcConnectorEgressSettings"
+  policy_type = "list"
+  allow       = ["is:ALL_TRAFFIC"]
+}
 
- module "cloudrun_allowed_ingress" {
-   source            = "terraform-google-modules/org-policy/google"
-   version           = "~> 4.0"
-   constraint        = "constraints/run.allowedIngress"
-   policy_for        = "project"
-   project_id        = var.cloudfunction_project_id
-   policy_type       = "list"
-   allow             = ["is:internal-and-cloud-load-balancing"]
- }
+module "cloudrun_allowed_ingress" {
+  source      = "terraform-google-modules/org-policy/google"
+  version     = "~> 4.0"
+  constraint  = "constraints/run.allowedIngress"
+  policy_for  = "project"
+  project_id  = var.cloudfunction_project_id
+  policy_type = "list"
+  allow       = ["is:internal-and-cloud-load-balancing"]
+}
 
- module "cloudrun_allowed_vpc_egress" {
-   source            = "terraform-google-modules/org-policy/google"
-   version           = "~> 4.0"
-   policy_for        = "project"
-   project_id        = var.cloudfunction_project_id
-   constraint        = "constraints/run.allowedVPCEgress"
-   policy_type       = "list"
-   allow             = ["private-ranges-only"]
- }
+module "cloudrun_allowed_vpc_egress" {
+  source      = "terraform-google-modules/org-policy/google"
+  version     = "~> 4.0"
+  policy_for  = "project"
+  project_id  = var.cloudfunction_project_id
+  constraint  = "constraints/run.allowedVPCEgress"
+  policy_type = "list"
+  allow       = ["private-ranges-only"]
+}

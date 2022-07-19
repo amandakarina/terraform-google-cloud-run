@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,34 +14,12 @@
  * limitations under the License.
  */
 
-variable "bucket_name" {
-  type = string
+output "name" {
+  value       = module.scheduled_project_cleaner.name
+  description = "The name of the job created"
 }
 
-variable "cloudfunction_project_id" {
-  type = string
-}
-
-variable "kms_project_id_id" {
-  type = string
-}
-
-variable "location" {
-  type = string
-}
-
-variable "function_name" {
-  type = string
-}
-
-variable "artifact_registry_repository" {
-  type = string
-}
-
-variable "kms_key_name" {
-  type = string
-}
-
-variable "account_id" {
-  type = string
+output "project_id" {
+  value       = var.project_id
+  description = "The project ID"
 }

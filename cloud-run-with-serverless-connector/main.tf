@@ -86,7 +86,7 @@ resource "google_compute_firewall" "serverless_to_vpc_connector" {
   network       = local.vpc_name
   direction     = "INGRESS"
   source_ranges = ["107.178.230.64/26", "35.199.224.0/19"]
-  target_tags = ["vpc-connector"]
+  target_tags   = ["vpc-connector"]
 
   allow {
     protocol = "icmp"
@@ -113,7 +113,7 @@ resource "google_compute_firewall" "vpc_connector_to_serverless" {
   network       = local.vpc_name
   direction     = "EGRESS"
   source_ranges = ["107.178.230.64/26", "35.199.224.0/19"]
-  target_tags = ["vpc-connector"]
+  target_tags   = ["vpc-connector"]
 
   allow {
     protocol = "icmp"
@@ -140,7 +140,7 @@ resource "google_compute_firewall" "vpc_connector_health_checks" {
   network       = local.vpc_name
   direction     = "INGRESS"
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "108.170.220.0/23"]
-  target_tags = ["vpc-connector"]
+  target_tags   = ["vpc-connector"]
 
   allow {
     protocol = "tcp"
@@ -153,10 +153,10 @@ resource "google_compute_firewall" "vpc_connector_health_checks" {
 }
 
 resource "google_compute_firewall" "vpc_connector_requests" {
-  project   = var.vpc_project_id
-  name      = "vpc-connector-requests"
-  network   = local.vpc_name
-  direction = "INGRESS"
+  project     = var.vpc_project_id
+  name        = "vpc-connector-requests"
+  network     = local.vpc_name
+  direction   = "INGRESS"
   source_tags = ["vpc-connector"]
 
   allow {
@@ -255,16 +255,16 @@ module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
   version = "~> 0.2.0"
 
-  service_name           = "cloud-run-service"
-  project_id             = var.serverless_project_id
-  location               = local.location
-  image                  = "us-docker.pkg.dev/cloudrun/container/hello"
-  service_account_email  = "${var.serverless_project_number}-compute@developer.gserviceaccount.com"
+  service_name          = "cloud-run-service"
+  project_id            = var.serverless_project_id
+  location              = local.location
+  image                 = "us-docker.pkg.dev/cloudrun/container/hello"
+  service_account_email = "${var.serverless_project_number}-compute@developer.gserviceaccount.com"
   template_annotations = {
-    "autoscaling.knative.dev/maxScale": 2,
-    "autoscaling.knative.dev/minScale": 1,
+    "autoscaling.knative.dev/maxScale" : 2,
+    "autoscaling.knative.dev/minScale" : 1,
     "run.googleapis.com/vpc-access-connector" = "serverless-vpc-connector",
-    "run.googleapis.com/vpc-access-egress" = "all-traffic"
+    "run.googleapis.com/vpc-access-egress"    = "all-traffic"
   }
 
   depends_on = [

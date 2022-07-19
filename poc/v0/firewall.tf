@@ -19,7 +19,7 @@ resource "google_compute_firewall" "serverless_to_vpc_connector" {
   network       = var.shared_vpc_name
   direction     = "INGRESS"
   source_ranges = ["107.178.230.64/26", "35.199.224.0/19"]
-  target_tags = ["vpc-connector"]
+  target_tags   = ["vpc-connector"]
 
   log_config {
     metadata = "INCLUDE_ALL_METADATA"
@@ -46,7 +46,7 @@ resource "google_compute_firewall" "vpc_connector_to_serverless" {
   network       = var.shared_vpc_name
   direction     = "EGRESS"
   source_ranges = ["107.178.230.64/26", "35.199.224.0/19"]
-  target_tags = ["vpc-connector"]
+  target_tags   = ["vpc-connector"]
 
   log_config {
     metadata = "INCLUDE_ALL_METADATA"
@@ -73,7 +73,7 @@ resource "google_compute_firewall" "vpc_connector_health_checks" {
   network       = var.shared_vpc_name
   direction     = "INGRESS"
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "108.170.220.0/23"]
-  target_tags = ["vpc-connector"]
+  target_tags   = ["vpc-connector"]
 
   log_config {
     metadata = "INCLUDE_ALL_METADATA"
@@ -86,10 +86,10 @@ resource "google_compute_firewall" "vpc_connector_health_checks" {
 }
 
 resource "google_compute_firewall" "vpc_connector_requests" {
-  project   = var.vpc_project_id
-  name      = "vpc-connector-requests"
-  network   = var.shared_vpc_name
-  direction = "INGRESS"
+  project     = var.vpc_project_id
+  name        = "vpc-connector-requests"
+  network     = var.shared_vpc_name
+  direction   = "INGRESS"
   source_tags = ["vpc-connector"]
 
   log_config {

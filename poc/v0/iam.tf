@@ -17,7 +17,7 @@
 resource "google_project_iam_member" "run_identity_services" {
   project = var.vpc_project_id
   role    = "roles/vpcaccess.user"
-  member     = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
+  member  = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
 }
 
 resource "google_project_service_identity" "vpcaccess_sa" {
@@ -52,6 +52,6 @@ resource "google_cloud_run_service_iam_member" "public-access" {
   project  = var.serverless_project_id
   service  = var.service_name
   role     = "roles/run.invoker"
-  member = "serviceAccount:${var.cloud_run_sa}"
+  member   = "serviceAccount:${var.cloud_run_sa}"
 }
 

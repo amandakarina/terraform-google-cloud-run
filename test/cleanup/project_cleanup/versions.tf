@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,34 +14,18 @@
  * limitations under the License.
  */
 
-variable "bucket_name" {
-  type = string
-}
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
 
-variable "cloudfunction_project_id" {
-  type = string
-}
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.53, < 5.0"
+    }
+  }
 
-variable "kms_project_id_id" {
-  type = string
-}
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-scheduled-function:project_cleanup/v2.5.0"
+  }
 
-variable "location" {
-  type = string
-}
-
-variable "function_name" {
-  type = string
-}
-
-variable "artifact_registry_repository" {
-  type = string
-}
-
-variable "kms_key_name" {
-  type = string
-}
-
-variable "account_id" {
-  type = string
 }
