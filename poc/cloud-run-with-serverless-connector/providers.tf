@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- provider "google" {
+provider "google" {
   impersonate_service_account = var.terraform_service_account
   request_timeout             = "60s"
 }
