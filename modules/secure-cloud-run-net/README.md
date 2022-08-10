@@ -6,7 +6,9 @@ The resources/services/activations/deletions that this module will create/trigge
 
 * Creates Firewall rules on your **VPC Project**.
 * Creates a sub network to VPC Connector usage purpose.
-* Creates Serverless Connector on your **VPC Project** or **Serverless Project**.
+* Creates Serverless Connector on your **VPC Project** or **Serverless Project**. Refer the comparison below:
+  * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
+  * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
 * Grant the necessary roles for Cloud Run are able to use VPC Connector on your VPC.
 
 ## Requirements
@@ -63,11 +65,13 @@ module "cloud_run_network" {
 |------|-------------|------|---------|:--------:|
 | connector\_name | The name of the serverless connector which is going to be created. | `string` | n/a | yes |
 | connector\_on\_host\_project | Connector is going to be created on the host project if true. When false, connector is going to be created on service project. For more information, access [documentation](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc). | `bool` | `true` | no |
+| create\_subnet | The subnet will be created with the subnet\_name variable if true. When false, it will use the subnet\_name for the subnet. | `bool` | `true` | no |
+| flow\_sampling | Sampling rate of VPC flow logs. The value must be in [0,1]. Where 1.0 means all logs, 0.5 mean half of the logs and 0.0 means no logs are reported. | `number` | `1` | no |
 | ip\_cidr\_range | The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be used to create Serverless Connector. | `string` | n/a | yes |
-| subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
+| subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | vpc\_project\_id | The project where shared vpc is. | `string` | n/a | yes |
 
 ## Outputs

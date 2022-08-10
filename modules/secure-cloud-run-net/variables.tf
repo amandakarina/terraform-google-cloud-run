@@ -37,7 +37,6 @@ variable "connector_name" {
 variable "subnet_name" {
   description = "Subnet name to be re-used to create Serverless Connector."
   type        = string
-  default     = null
 }
 
 variable "shared_vpc_name" {
@@ -54,4 +53,16 @@ variable "connector_on_host_project" {
 variable "ip_cidr_range" {
   description = "The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported"
   type        = string
+}
+
+variable "create_subnet" {
+  description = "The subnet will be created with the subnet_name variable if true. When false, it will use the subnet_name for the subnet."
+  type        = bool
+  default     = true
+}
+
+variable "flow_sampling" {
+  description = "Sampling rate of VPC flow logs. The value must be in [0,1]. Where 1.0 means all logs, 0.5 mean half of the logs and 0.0 means no logs are reported."
+  type        = number
+  default     = 1.0
 }
