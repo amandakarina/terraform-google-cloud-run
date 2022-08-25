@@ -38,6 +38,7 @@ variable "vpc_project_id" {
 variable "key_name" {
   description = "The name of KMS Key to be created and used in Cloud Run."
   type        = string
+  default     = "cloud-run-kms-key"
 }
 
 variable "kms_project_id" {
@@ -63,6 +64,7 @@ variable "cloud_run_sa" {
 variable "connector_name" {
   description = "The name for the connector to be created."
   type        = string
+  default     = "serverless-vpc-connector"
 }
 
 variable "subnet_name" {
@@ -100,6 +102,7 @@ variable "prevent_destroy" {
 variable "keyring_name" {
   description = "Keyring name."
   type        = string
+  default     = "cloud-run-kms-keyring"
 }
 
 variable "key_rotation_period" {
@@ -138,4 +141,15 @@ variable "use_artifact_registry_image" {
   description = "When true it will give permission to read an image from your artifact registry."
   type        = bool
   default     = false
+}
+
+variable "create_subnet" {
+  description = "The subnet will be created with the subnet_name variable if true. When false, it will use the subnet_name for the subnet."
+  type        = bool
+  default     = true
+}
+
+variable "domain" {
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
+  type        = string
 }

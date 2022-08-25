@@ -14,36 +14,34 @@
  * limitations under the License.
  */
 
-locals {
-  serverless_apis = [
+module "serverless_project_apis" {
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 13.0"
+
+  project_id                  = var.serverless_project_id
+  disable_services_on_destroy = false
+
+  activate_apis = [
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
     "container.googleapis.com",
     "run.googleapis.com",
     "cloudkms.googleapis.com"
   ]
-  vpc_apis = [
+}
+
+module "vpc_project_apis" {
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 13.0"
+
+  project_id                  = var.vpc_project_id
+  disable_services_on_destroy = false
+
+  activate_apis = [
     "vpcaccess.googleapis.com",
     "compute.googleapis.com"
   ]
 }
-
-resource "google_project_service" "serverless_project_apis" {
-  for_each = toset(local.serverless_apis)
-
-  project            = var.serverless_project_id
-  service            = each.value
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "vpc_project_apis" {
-  for_each = toset(local.vpc_apis)
-
-  project            = var.vpc_project_id
-  service            = each.value
-  disable_on_destroy = false
-}
-
 
 module "cloud_run_network" {
   source = "../secure-cloud-run-net"
@@ -56,9 +54,10 @@ module "cloud_run_network" {
   shared_vpc_name           = var.shared_vpc_name
   connector_on_host_project = true
   ip_cidr_range             = var.ip_cidr_range
+  create_subnet             = var.create_subnet
 
   depends_on = [
-    google_project_service.vpc_project_apis
+    module.vpc_project_apis
   ]
 }
 
@@ -70,8 +69,7 @@ resource "google_project_service_identity" "serverless_sa" {
 }
 
 resource "google_artifact_registry_repository_iam_member" "artifact_registry_iam" {
-  provider = google-beta
-  count    = var.use_artifact_registry_image ? 0 : 1
+  count = var.use_artifact_registry_image ? 1 : 0
 
   project    = var.artifact_registry_repository_project_id
   location   = var.artifact_registry_repository_location
@@ -113,12 +111,13 @@ module "cloud_run_core" {
   cloud_run_sa     = var.cloud_run_sa
   vpc_connector_id = module.cloud_run_network.connector_id
   encryption_key   = module.cloud_run_security.key_self_link
+  domain           = var.domain
   env_vars         = var.env_vars
   members          = var.members
   region           = var.region
 
   depends_on = [
-    google_project_service.serverless_project_apis,
+    module.serverless_project_apis,
     google_artifact_registry_repository_iam_member.artifact_registry_iam
   ]
 }
