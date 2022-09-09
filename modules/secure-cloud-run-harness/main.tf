@@ -28,6 +28,10 @@ locals {
     "cloudkms.googleapis.com",
     "artifactregistry.googleapis.com"
   ]
+
+  decrypters = join(",", concat(["serviceAccount:${google_project_service_identity.artifact_sa.email}"], var.decrypters))
+  encrypters = join(",", concat(["serviceAccount:${google_project_service_identity.artifact_sa.email}"], var.encrypters))
+
 }
 
 resource "google_folder" "fld_serverless" {
@@ -85,6 +89,13 @@ resource "google_service_account_iam_member" "identity_service_account_user" {
   member             = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
 }
 
+resource "google_project_service_identity" "artifact_sa" {
+  provider = google-beta
+
+  project = module.security_project.project_id
+  service = "artifactregistry.googleapis.com"
+}
+
 resource "google_artifact_registry_repository" "repo" {
   project       = module.security_project.project_id
   location      = var.location
@@ -110,12 +121,12 @@ module "artifact_registry_kms" {
   location             = var.location
   keyring              = var.keyring_name
   keys                 = [var.key_name]
-  set_decrypters_for   = length(var.decrypters) > 0 ? [var.key_name] : []
-  set_encrypters_for   = length(var.encrypters) > 0 ? [var.key_name] : []
-  decrypters           = var.decrypters
-  encrypters           = var.encrypters
+  set_decrypters_for   = [var.key_name]
+  set_encrypters_for   = [var.key_name]
+  decrypters           = [local.decrypters]
+  encrypters           = [local.encrypters]
   set_owners_for       = length(var.owners) > 0 ? [var.key_name] : []
-  owners               = var.owners
+  owners               = [join(",", var.owners)]
   prevent_destroy      = var.prevent_destroy
   key_rotation_period  = var.key_rotation_period
   key_protection_level = var.key_protection_level

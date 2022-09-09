@@ -5,9 +5,9 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| artifact\_registry\_repository\_location | Artifact Registry Repository location to grant serverless identity viewer role. | `string` | n/a | yes |
-| artifact\_registry\_repository\_name | Artifact Registry Repository name to grant serverless identity viewer role | `string` | n/a | yes |
-| artifact\_registry\_repository\_project\_id | Artifact Registry Repository Project ID to grant serverless identity viewer role. | `string` | n/a | yes |
+| artifact\_registry\_repository\_location | Artifact Registry Repository location to grant serverless identity viewer role. | `string` | `null` | no |
+| artifact\_registry\_repository\_name | Artifact Registry Repository name to grant serverless identity viewer role | `string` | `null` | no |
+| artifact\_registry\_repository\_project\_id | Artifact Registry Repository Project ID to grant serverless identity viewer role. | `string` | `null` | no |
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
 | connector\_name | The name for the connector to be created. | `string` | `"serverless-vpc-connector"` | no |
 | create\_subnet | The subnet will be created with the subnet\_name variable if true. When false, it will use the subnet\_name for the subnet. | `bool` | `true` | no |
