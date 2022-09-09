@@ -1,6 +1,6 @@
 # Secure Cloud Run Core
 
-This module handles the basic deployment core configurations for Cloud Run module.
+This module handles the basic deployment core configurations for Secure Cloud Run module.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
@@ -81,7 +81,7 @@ module "cloud_run_core" {
 |------|-------------|
 | domain\_map\_id | Unique Identifier for the created domain map. |
 | domain\_map\_status | Status of Domain mapping. |
-| load-balancer-ip | IP Address used by Load Balancer. |
+| load\_balancer\_ip | IP Address used by Load Balancer. |
 | revision | Deployed revision for the service. |
 | service\_id | Unique Identifier for the created service. |
 | service\_status | Status of the created service. |

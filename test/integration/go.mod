@@ -4,7 +4,6 @@ go 1.17
 
 require (
 	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.0.1
-	github.com/gruntwork-io/terratest v0.40.7
 	github.com/stretchr/testify v1.7.1
 	github.com/tidwall/gjson v1.12.1
 )
@@ -27,6 +26,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/googleapis/gax-go/v2 v2.0.5 // indirect
+	github.com/gruntwork-io/terratest v0.40.7 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-getter v1.5.9 // indirect

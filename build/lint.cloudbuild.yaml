@@ -18,6 +18,7 @@ steps:
   args: ['/usr/local/bin/test_lint.sh']
   env:
   - "EXCLUDE_LINT_DIRS=\\./poc/cloudfunction/index.zip"
+  - "EXCLUDE_LINT_DIRS=\\./poc/hello-world-with-apis/helloworld"
 tags:
 - 'ci'
 - 'lint'

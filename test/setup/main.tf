@@ -14,28 +14,15 @@
  * limitations under the License.
  */
 
-
-provider "google" {
-  impersonate_service_account = var.terraform_sa
-}
-
-provider "google-beta" {
-  impersonate_service_account = var.terraform_sa
-}
-
 module "project" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 13.0"
+  version = "~> 10.0"
 
   name              = "ci-cloud-run"
   random_project_id = "true"
   org_id            = var.org_id
   folder_id         = var.folder_id
   billing_account   = var.billing_account
-
-  svpc_host_project_id               = var.host_project_id
-  vpc_service_control_attach_enabled = true
-  vpc_service_control_perimeter_name = "accessPolicies/${var.access_context_manager_policy_id}/servicePerimeters/${var.vpc_service_control_perimeter_name}"
 
   activate_apis = [
     "cloudresourcemanager.googleapis.com",
@@ -45,24 +32,5 @@ module "project" {
     "cloudkms.googleapis.com",
     "iam.googleapis.com"
   ]
-
-  labels = { "ci-project" : "cloud-run" }
 }
 
-module "kms_project" {
-  source  = "terraform-google-modules/project-factory/google"
-  version = "~> 13.0"
-
-  name              = "ci-cloud-run-kms"
-  random_project_id = "true"
-  org_id            = var.org_id
-  folder_id         = var.folder_id
-  billing_account   = var.billing_account
-
-  activate_apis = [
-    "cloudkms.googleapis.com",
-    "iam.googleapis.com"
-  ]
-
-  labels = { "ci-project" : "cloud-run" }
-}

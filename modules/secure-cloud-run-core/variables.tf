@@ -142,16 +142,16 @@ variable "encryption_key" {
 }
 
 variable "env_vars" {
+  description = "Environment variables."
   type = list(object({
     value = string
     name  = string
   }))
-  description = "Environment variables."
-  default     = []
+  default = []
 }
 
 variable "members" {
-  type        = list(string)
   description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
+  type        = list(string)
   default     = []
 }

@@ -87,7 +87,7 @@ module "cloud_run_security" {
 
 | Name | Description |
 |------|-------------|
-| key\_self\_link | Key self link. |
+| key\_self\_link | KMS crypto key. |
 | keyring\_resource | Keyring resource. |
 | keyring\_self\_link | Self link of the keyring. |
 

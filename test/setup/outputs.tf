@@ -15,16 +15,10 @@
  */
 
 output "project_id" {
-  value       = module.project.project_id
-  description = "Project created to deploy Secure Cloud Run."
+  value = module.project.project_id
 }
 
-output "kms_project_id" {
-  value       = module.kms_project.project_id
-  description = "Project created to create KMS Keys related to Cloud Run."
-}
-
-output "project_default_sa_email" {
-  value       = module.project.service_account_email
-  description = "Service account created in the Secure Cloud Run project."
+output "sa_key" {
+  value     = google_service_account_key.int_test.private_key
+  sensitive = true
 }

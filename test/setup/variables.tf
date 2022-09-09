@@ -13,37 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 variable "org_id" {
-  description = "The numeric organization id."
-  type        = string
+  description = "The numeric organization id"
 }
 
 variable "folder_id" {
-  description = "The folder to deploy in."
-  type        = string
+  description = "The folder to deploy in"
 }
 
 variable "billing_account" {
-  description = "The billing account id associated with the project, e.g. XXXXXX-YYYYYY-ZZZZZZ."
-  type        = string
+  description = "The billing account id associated with the project, e.g. XXXXXX-YYYYYY-ZZZZZZ"
 }
 
-variable "host_project_id" {
-  description = "The shared VPC project id."
-  type        = string
-}
-
-variable "vpc_service_control_perimeter_name" {
-  description = "The service perimeter name."
-  type        = string
-}
-
-variable "access_context_manager_policy_id" {
-  description = "The accessc context manager policy id."
-  type        = string
-}
-
-variable "terraform_sa" {
-  description = "The service account created by foundation."
-  type        = string
-}
