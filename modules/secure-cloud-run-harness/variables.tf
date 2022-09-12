@@ -46,12 +46,6 @@ variable "parent_folder_id" {
   default     = ""
 }
 
-variable "access_context_manager_policy_id" {
-  type        = number
-  description = "The ID of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format=\"value(name)\"`."
-  default     = null
-}
-
 variable "create_access_context_manager_access_policy" {
   description = "Defines if Access Context Manager will be created by Terraform."
   type        = bool
