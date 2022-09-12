@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// [START cloudrun_helloworld_service]
-// [START run_helloworld_service]
-
-// Sample run-helloworld is a minimal Cloud Run service.
 package main
 
 import (
@@ -86,10 +82,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Keyrings: %v!\n", keyrings)
 }
 
-// [END run_helloworld_service]
-
-// [START storage_list_buckets]
-// listBuckets lists buckets in the project.
 func listBuckets(w http.ResponseWriter) ([]string, error) {
 	projectID := os.Getenv("PROJECT_ID")
 	ctx := context.Background()
@@ -118,10 +110,7 @@ func listBuckets(w http.ResponseWriter) ([]string, error) {
 	}
 	return buckets, nil
 }
-// [END listBuckets]
 
-// [START listComputeRegions]
-// listComputeRegions lists compute regions in the project.
 func listComputeRegions(w http.ResponseWriter) ([]string, error) {
 	ctx := context.Background()
 
@@ -154,13 +143,9 @@ func listComputeRegions(w http.ResponseWriter) ([]string, error) {
 	}
 	return regions, nil
 }
-// [END listComputeRegions]
 
-// [START listKeyRings]
-// listKeyRings lists keyrings in the project.
 func listKeyRings(w http.ResponseWriter) ([]string, error) {
 	securityProjectID := os.Getenv("SECURITY_PROJECT_ID")
-	//us-central1-docker.pkg.dev/sjr77-security-2a0f/sjr77-images/hello-world-with-apis:latest
 	locationID := "global"
 
 	log.Println("Creating service for KMS client.")
@@ -173,14 +158,11 @@ func listKeyRings(w http.ResponseWriter) ([]string, error) {
 
 	log.Println(fmt.Sprintf("Creating request for KMS client on project: %s and location: %s", securityProjectID, locationID))
 	listKeyRingsReq := &kmspb.ListKeyRingsRequest{
-		Parent: fmt.Sprintf("projects/%s/locations/%s", securityProjectID, locationID),
-		//projects/sjr77-security-2a0f/locations/global/keyRings/sjr77-keyring1
+		Parent: fmt.Sprintf("projects/%s/locations/%s", securityProjectID, locationID)
 	}
 
-	// List the KeyRings.
 	it := client.ListKeyRings(ctx, listKeyRingsReq)
 
-	// Iterate and print the results.
 	var keyrings []string
 	for {
 		resp, err := it.Next()
@@ -196,6 +178,3 @@ func listKeyRings(w http.ResponseWriter) ([]string, error) {
 
 	return keyrings, nil
 }
-// [END listKeyRings]
-
-// [END cloudrun_helloworld_service]
