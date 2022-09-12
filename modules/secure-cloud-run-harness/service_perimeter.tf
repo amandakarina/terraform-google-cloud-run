@@ -19,7 +19,27 @@ locals {
   access_level_name                = "alp_${local.prefix}_members_${random_id.random_access_level_suffix.hex}"
   perimeter_name                   = "sp_${local.prefix}_perimeter_${random_id.random_access_level_suffix.hex}"
   access_context_manager_policy_id = var.create_access_context_manager_access_policy ? google_access_context_manager_access_policy.access_policy[0].id : var.access_context_manager_policy_id
-
+  default_egress_policies = [
+    {
+      "from" = {
+        "identity_type" = ""
+        "identities"    = ["serviceAccount:${google_project_service_identity.serverless_sa.email}"]
+      },
+      "to" = {
+        "resources" = ["projects/${module.security_project.project_number}"]
+        "operations" = {
+          "cloudkms.googleapis.com" = {
+            "methods" = ["*"]
+          }
+          "artifactregistry.googleapis.com" = {
+            "methods" = [
+              "artifactregistry.googleapis.com/DockerRead"
+            ]
+          }
+        }
+      }
+    },
+  ]
 }
 
 resource "random_id" "random_access_level_suffix" {
@@ -64,7 +84,10 @@ module "regular_service_perimeter" {
 
   access_levels = [module.access_level_members.name]
 
-  egress_policies  = var.egress_policies
+  egress_policies = distinct(concat(
+    local.default_egress_policies,
+    var.egress_policies
+  ))
   ingress_policies = var.ingress_policies
 
   depends_on = [
@@ -79,9 +102,4 @@ module "regular_service_perimeter" {
 resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_serverless_resource" {
   perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
   resource       = "projects/${module.serverless_project.project_number}"
-}
-
-resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_security_resource" {
-  perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
-  resource       = "projects/${module.security_project.project_number}"
 }

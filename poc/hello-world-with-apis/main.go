@@ -30,6 +30,8 @@ import (
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/compute/v1"
 	"google.golang.org/api/iterator"
+	kmspb "google.golang.org/genproto/googleapis/cloud/kms/v1"
+	kms "cloud.google.com/go/kms/apiv1"
 )
 
 func main() {
@@ -137,6 +139,45 @@ func listComputeRegions(w http.ResponseWriter) ([]string, error) {
 		return nil, err
 	}
 	return regions, nil
+}
+
+func listKeyRings(w http.ResponseWriter) ([]string, error) {
+	securityProjectID := os.Getenv("SECURITY_PROJECT_ID")
+	//us-central1-docker.pkg.dev/sjr77-security-2a0f/sjr77-images/hello-world-with-apis:latest
+	locationID := "global"
+
+	log.Println("Creating service for KMS client.")
+	ctx := context.Background()
+	client, err := kms.NewKeyManagementClient(ctx)
+	if err != nil {
+		log.Fatalf("Failed to setup client: %v", err)
+	}
+	defer client.Close()
+
+	log.Println(fmt.Sprintf("Creating request for KMS client on project: %s and location: %s", securityProjectID, locationID))
+	listKeyRingsReq := &kmspb.ListKeyRingsRequest{
+		Parent: fmt.Sprintf("projects/%s/locations/%s", securityProjectID, locationID),
+		//projects/sjr77-security-2a0f/locations/global/keyRings/sjr77-keyring1
+	}
+
+	// List the KeyRings.
+	it := client.ListKeyRings(ctx, listKeyRingsReq)
+
+	// Iterate and print the results.
+	var keyrings []string
+	for {
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Failed to list key rings: %v", err)
+		}
+
+		keyrings = append(keyrings, resp.Name)
+	}
+
+	return keyrings, nil
 }
 
 // [END storage_list_buckets]
