@@ -53,6 +53,7 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	// Compute Regions test
 	name := os.Getenv("NAME")
 	if name == "" {
 		name = "World"
@@ -65,14 +66,24 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, "Regions: %v!\n", regions)
 	log.Println("Regions: %v!\n", regions)
+	
+	// Buckets test
 	buckets, err := listBuckets(w)
 	if err != nil {
 		log.Printf("Error listing project buckets: %s.", err.Error())
 		fmt.Errorf(err.Error())
 	}
-
 	log.Println("Buckets: %v!\n", buckets)
 	fmt.Fprintf(w, "Buckets: %v!\n", buckets)
+
+	// KMS test
+	keyrings, err := listKeyRings(w)
+	if err != nil {
+		log.Printf("Error listing project keyrings: %s.", err.Error())
+		fmt.Errorf(err.Error())
+	}
+	log.Println("Keyrings: %v!\n", keyrings)
+	fmt.Fprintf(w, "Keyrings: %v!\n", keyrings)
 }
 
 // [END run_helloworld_service]
@@ -107,7 +118,10 @@ func listBuckets(w http.ResponseWriter) ([]string, error) {
 	}
 	return buckets, nil
 }
+// [END listBuckets]
 
+// [START listComputeRegions]
+// listComputeRegions lists compute regions in the project.
 func listComputeRegions(w http.ResponseWriter) ([]string, error) {
 	ctx := context.Background()
 
@@ -140,7 +154,10 @@ func listComputeRegions(w http.ResponseWriter) ([]string, error) {
 	}
 	return regions, nil
 }
+// [END listComputeRegions]
 
+// [START listKeyRings]
+// listKeyRings lists keyrings in the project.
 func listKeyRings(w http.ResponseWriter) ([]string, error) {
 	securityProjectID := os.Getenv("SECURITY_PROJECT_ID")
 	//us-central1-docker.pkg.dev/sjr77-security-2a0f/sjr77-images/hello-world-with-apis:latest
@@ -179,7 +196,6 @@ func listKeyRings(w http.ResponseWriter) ([]string, error) {
 
 	return keyrings, nil
 }
-
-// [END storage_list_buckets]
+// [END listKeyRings]
 
 // [END cloudrun_helloworld_service]
