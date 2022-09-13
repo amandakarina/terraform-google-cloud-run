@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = module.project.project_id
-}
-output "sa_email" {
-  value = google_service_account.int_test.email
+module "service_account" {
+  source     = "terraform-google-modules/service-accounts/google"
+  version    = "~> 4.1.1"
+  project_id = var.project_id
+  prefix     = "sa-cloud-run"
+  names      = ["simple"]
 }
 
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
+module "cloud_run" {
+  source = "../../"
+
+  service_name          = "ci-cloud-run"
+  project_id            = var.project_id
+  location              = "us-central1"
+  image                 = "us-docker.pkg.dev/cloudrun/container/hello"
+  service_account_email = module.service_account.email
 }
