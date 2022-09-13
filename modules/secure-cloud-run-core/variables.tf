@@ -97,7 +97,7 @@ variable "ssl" {
 }
 
 variable "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. "
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
   type        = string
 }
 
@@ -142,16 +142,16 @@ variable "encryption_key" {
 }
 
 variable "env_vars" {
-  description = "Environment variables."
   type = list(object({
     value = string
     name  = string
   }))
-  default = []
+  description = "Environment variables."
+  default     = []
 }
 
 variable "members" {
-  description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
   type        = list(string)
+  description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
   default     = []
 }
