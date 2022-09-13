@@ -62,7 +62,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, "Regions: %v!\n", regions)
 	log.Println("Regions: %v!\n", regions)
-	
+
 	// Buckets test
 	buckets, err := listBuckets(w)
 	if err != nil {
