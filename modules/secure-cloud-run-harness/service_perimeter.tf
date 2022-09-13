@@ -18,6 +18,7 @@ locals {
   prefix                           = "secure_cloud_run"
   access_level_name                = "alp_${local.prefix}_members_${random_id.random_access_level_suffix.hex}"
   perimeter_name                   = "sp_${local.prefix}_perimeter_${random_id.random_access_level_suffix.hex}"
+  access_context_manager_policy_id = var.create_access_context_manager_access_policy ? google_access_context_manager_access_policy.access_policy[0].id : var.access_context_manager_policy_id
   default_egress_policies = [
     {
       "from" = {
@@ -59,7 +60,7 @@ module "access_level_members" {
   source      = "terraform-google-modules/vpc-service-controls/google//modules/access_level"
   version     = "~> 4.0"
   description = "${local.prefix} Access Level"
-  policy      = google_access_context_manager_access_policy.access_policy[0].id
+  policy      = local.access_context_manager_policy_id
   name        = local.access_level_name
   members     = var.access_level_additional_members
 }
@@ -67,7 +68,7 @@ module "access_level_members" {
 module "regular_service_perimeter" {
   source         = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
   version        = "~> 4.0"
-  policy         = google_access_context_manager_access_policy.access_policy[0].id
+  policy         = local.access_context_manager_policy_id
   perimeter_name = local.perimeter_name
   description    = "Serverless VPC Service Controls perimeter"
 
@@ -99,6 +100,6 @@ module "regular_service_perimeter" {
 }
 
 resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_serverless_resource" {
-  perimeter_name = "accessPolicies/${google_access_context_manager_access_policy.access_policy[0].id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
+  perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
   resource       = "projects/${module.serverless_project.project_number}"
 }
