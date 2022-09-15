@@ -15,7 +15,9 @@
  */
 
 module "cloud_run" {
-  source = "../.."
+  #source = "../.." #for public repo use
+  source  = "GoogleCloudPlatform/cloud-run/google" #for internal repo use
+  version = "0.3.0"                                #for internal repo use
 
   service_name          = var.service_name
   project_id            = var.project_id

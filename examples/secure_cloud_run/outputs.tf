@@ -108,3 +108,11 @@ output "organization_id" {
   description = "The organization ID to apply the policy to."
   value       = var.organization_id
 }
+
+output "domain" {
+  value = var.domain
+}
+
+output "shared_vpc_name" {
+  value = var.shared_vpc_name
+}
