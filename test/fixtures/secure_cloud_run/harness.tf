@@ -30,7 +30,7 @@ locals {
 data "terraform_remote_state" "sfb-network-prod" {
   backend = "gcs"
   config = {
-    bucket                      = "bkt-b-tfstate-9182" #for internal repo use
+    bucket                      = "bkt-b-tfstate-1d93"
     prefix                      = "terraform/networks/production/"
     impersonate_service_account = local.terraform_sa_email
   }
@@ -39,7 +39,7 @@ data "terraform_remote_state" "sfb-network-prod" {
 data "terraform_remote_state" "sfb-env-prod" {
   backend = "gcs"
   config = {
-    bucket                      = "bkt-b-tfstate-9182" #for internal repo use #public bkt-b-tfstate-1d93
+    bucket                      = "bkt-b-tfstate-1d93"
     prefix                      = "terraform/environments/production/"
     impersonate_service_account = local.terraform_sa_email
   }
