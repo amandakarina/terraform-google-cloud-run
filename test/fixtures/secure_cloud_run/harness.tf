@@ -39,7 +39,7 @@ data "terraform_remote_state" "sfb-network-prod" {
 data "terraform_remote_state" "sfb-env-prod" {
   backend = "gcs"
   config = {
-    bucket                      = "bkt-b-tfstate-1d93"
+    bucket                      = "bkt-b-tfstate-9182"
     prefix                      = "terraform/environments/production/"
     impersonate_service_account = local.terraform_sa_email
   }

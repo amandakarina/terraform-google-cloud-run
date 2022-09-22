@@ -6,43 +6,19 @@ The resources/services/activations/deletions that this module will create/trigge
 
 * Creates a Cloud Run Service.
 * Creates a Load Balancer Service using Google-managed SSL certificates.
-* Creates Cloud Armor Service only including the preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
-
-## Requirements
-
-### Software
-
-The following dependencies must be available:
-
-* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
-* [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.53
-
-### APIs
-
-A project with the following APIs enabled must be used to host the
-resources of this module:
-
-* Serverless Project
-  * Google Cloud Run Service: `run.googleapis.com`
-
-### Service Account
-
-A service account with the following roles must be used to provision
-the resources of this module:
-
-* Cloud Run Developer: `roles/run.developer`
-* Compute Network User: `roles/compute.networkUser`
-* Artifact Registry Reader: `roles/artifactregistry.reader`
+* Creates Cloud Armor Service only including the pre-configured rules for SQLi, XSS, LFI, RCE, RFI, Scanner Detection, Protocol Attack and Session Fixation.
 
 ## Usage
 
 ```hcl
 module "cloud_run_core" {
-  source = "GoogleCloudPlatform/cloud-run/google//modules/cloud_run"
-  version = "~> 0.2.0"
+  source = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run-core"
+  version = "~> 0.3.0"
 
   service_name          = <SERVICE NAME>
   location              = <SERVICE LOCATION>
+  region                = <REGION>
+  domain                = <YOUR-DOMAIN>
   serverless_project_id = <SERVICE PROJECT ID>
   image                 = <IMAGE URL>
   cloud_run_sa          = <CLOUD RUN SERVICE ACCOUNT EMAIL>
@@ -88,3 +64,30 @@ module "cloud_run_core" {
 | service\_url | The URL on which the deployed service is available. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Requirements
+
+### Software
+
+The following dependencies must be available:
+
+* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
+* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) plugin < 5.0
+
+### APIs
+
+A project with the following APIs enabled must be used to host the
+resources of this module:
+
+* Serverless Project
+  * Google Cloud Run Service: `run.googleapis.com`
+  * Google Compute Service: `compute.googleapis.com`
+
+### Service Account
+
+A service account with the following roles must be used to provision
+the resources of this module:
+
+* Cloud Run Developer: `roles/run.developer`
+* Compute Network User: `roles/compute.networkUser`
+* Artifact Registry Reader: `roles/artifactregistry.reader`
