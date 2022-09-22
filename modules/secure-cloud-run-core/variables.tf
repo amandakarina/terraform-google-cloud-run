@@ -14,6 +14,53 @@
  * limitations under the License.
  */
 
+
+
+variable "location" {
+  description = "The location where resources are going to be deployed."
+  type        = string
+}
+
+variable "project_id" {
+  description = "The project where cloud run is going to be deployed."
+  type        = string
+}
+
+variable "service_name" {
+  description = "The name of the Cloud Run service to create."
+  type        = string
+}
+
+variable "image" {
+  description = "GAR hosted image URL to deploy."
+  type        = string
+}
+
+variable "cloud_run_sa" {
+  description = "Service account to be used on Cloud Run."
+  type        = string
+}
+
+variable "vpc_connector_id" {
+  description = "VPC Connector id in the format projects/PROJECT/locations/LOCATION/connectors/NAME."
+  type        = string
+}
+
+variable "encryption_key" {
+  description = "CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY."
+  type        = string
+}
+
+variable "region" {
+  description = "Location for load balancer and Cloud Run resources."
+  type        = string
+}
+
+variable "domain" {
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
+  type        = string
+}
+
 variable "default_rules" {
   description = "Default rule for Cloud Armor."
   default = {
@@ -85,60 +132,15 @@ variable "owasp_rules" {
   }))
 }
 
-variable "region" {
-  description = "Location for load balancer and Cloud Run resources."
-  type        = string
-}
-
 variable "ssl" {
   description = "Run load balancer on HTTPS and provision managed certificate with provided `domain`."
   type        = bool
   default     = true
 }
 
-variable "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
-  type        = string
-}
-
 variable "lb_name" {
   description = "Name for load balancer and associated resources."
   default     = "tf-cr-lb"
-}
-
-variable "location" {
-  description = "The location where resources are going to be deployed."
-  type        = string
-}
-
-variable "project_id" {
-  description = "The project where cloud run is going to be deployed."
-  type        = string
-}
-
-variable "service_name" {
-  description = "The name of the Cloud Run service to create."
-  type        = string
-}
-
-variable "image" {
-  description = "GAR hosted image URL to deploy."
-  type        = string
-}
-
-variable "cloud_run_sa" {
-  description = "Service account to be used on Cloud Run."
-  type        = string
-}
-
-variable "vpc_connector_id" {
-  description = "VPC Connector id in the format projects/PROJECT/locations/LOCATION/connectors/NAME."
-  type        = string
-}
-
-variable "encryption_key" {
-  description = "CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY."
-  type        = string
 }
 
 variable "env_vars" {
