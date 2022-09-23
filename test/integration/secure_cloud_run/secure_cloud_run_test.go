@@ -42,6 +42,7 @@ func getPolicyID(t *testing.T, orgID string) string {
 func TestSecureCloudRun(t *testing.T) {
 
 	orgID := utils.ValFromEnv(t, "TF_VAR_org_id")
+	resourcesSuffix := utils.ValFromEnv(t, "TF_VAR_resource_names_suffix")
 	policyID := getPolicyID(t, orgID)
 	vars := map[string]string{
 		"access_context_manager_policy_id": policyID,
@@ -75,8 +76,8 @@ func TestSecureCloudRun(t *testing.T) {
 		assert.Equal(expectedImage, opCloudRun.Get("spec.template.spec.containers.0.image").String(), fmt.Sprintf("Should have %s image.", expectedImage))
 		assert.Equal(keyFullName, annotations["run.googleapis.com/encryption-key"].String(), fmt.Sprintf("Should have same encryption-Key: %s", keyFullName))
 
-		connectorName := "serverless-connector"
-		expectedSubnet := "vpc-subnet"
+		connectorName := fmt.Sprintf("con-run-%s", resourcesSuffix)
+		expectedSubnet := fmt.Sprintf("vpc-subnet-%s", resourcesSuffix)
 		expectedMachineType := "e2-micro"
 		opVPCConnector := gcloud.Runf(t, "compute networks vpc-access connectors describe %s --region=us-central1 --project=%s --impersonate-service-account=%s", connectorName, serverlessProjectId, terraformSa)
 		assert.Equal(connectorId, opVPCConnector.Get("name").String(), fmt.Sprintf("Should have same id: %s", connectorId))
