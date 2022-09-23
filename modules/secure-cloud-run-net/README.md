@@ -1,46 +1,24 @@
 # Secure Cloud Run Network
 
 This module handles the basic deployment network configurations for Cloud Run usage.
+When using a Shared VPC, you can chose where to create the VPC Connector.
+
+_Note:_ When using a single VPC you should provides VPC and Serverless project id with the same value and the value for `connector_on_host_project` variable must be `false`.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
 * Creates Firewall rules on your **VPC Project**.
+  * Serverless to VPC Connector
+  * VPC Connector to Serverless
+  * VPC Connector to LB
+  * VPC Connector Health Checks
 * Creates a sub network to VPC Connector usage purpose.
 * Creates Serverless Connector on your **VPC Project** or **Serverless Project**. Refer the comparison below:
   * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
   * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
-* Grant the necessary roles for Cloud Run are able to use VPC Connector on your VPC.
-
-## Requirements
-
-### Software
-
-The following dependencies must be available:
-
-* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
-* [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.53
-
-### APIs
-
-The Serverless and Network project with the following APIs enabled must be used to host the
-resources of this module:
-
-* Google VPC Access API: `vpcaccess.googleapis.com`
-* Compute API: `compute.googleapis.com`
-
-### Service Account
-
-A service account with one of the following roles must be used to provision
-the resources of this module:
-
-* Network Project
-  * Compute Shared VPC Admin: `roles/compute.xpnAdmin`
-  * Network Admin: `roles/compute.networkAdmin`
-  * Security Admin: `roles/compute.securityAdmin`
-  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
-* Serverless Project
-  * Security Admin: `roles/compute.securityAdmin`
-  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
+* Grant the necessary roles for Cloud Run are able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
+  * Grant Network User role to Cloud Services service account.
+  * Grant VPC Access User to Cloud Run Service Identity when deploying VPC Access.
 
 ## Usage
 
@@ -86,3 +64,34 @@ module "cloud_run_network" {
 | subnet\_name | The name of the sub-network used to create VPC Connector. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Requirements
+
+### Software
+
+The following dependencies must be available:
+
+* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
+* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) plugin < 5.0
+
+### APIs
+
+The Serverless and Network project with the following APIs enabled must be used to host the
+resources of this module:
+
+* Google VPC Access API: `vpcaccess.googleapis.com`
+* Compute API: `compute.googleapis.com`
+
+### Service Account
+
+A service account with one of the following roles must be used to provision
+the resources of this module:
+
+* Network Project
+  * Compute Shared VPC Admin: `roles/compute.xpnAdmin`
+  * Network Admin: `roles/compute.networkAdmin`
+  * Security Admin: `roles/compute.securityAdmin`
+  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
+* Serverless Project
+  * Security Admin: `roles/compute.securityAdmin`
+  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
