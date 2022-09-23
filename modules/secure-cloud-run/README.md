@@ -32,51 +32,6 @@ The resources/services/activations/deletions that this module will create/trigge
   * Creates a Load Balancer Service using Google-managed SSL certificates.
   * Creates Cloud Armor Service only including the preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
 
-## Requirements
-
-### Software
-
-The following dependencies must be available:
-
-* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
-* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) < 5.0
-
-### APIs
-
-The Secure-cloud-run project will enable the following APIs to the Serverlesss Project:
-
-* Google VPC Access API: `vpcaccess.googleapis.com`
-* Compute API: `compute.googleapis.com`
-* Container Registry API: `container.googleapis.com`
-* Cloud Run API: `run.googleapis.com`
-* Cloud KMS API: `cloudkms.googleapis.com`
-
-The Secure-cloud-run project will enable the following APIs to the VPC Project:
-
-* Google VPC Access API: `vpcaccess.googleapis.com`
-* Compute API: `compute.googleapis.com`
-
-### Service Account
-
-A service account with the following roles must be used to provision
-the resources of this module:
-
-* VPC Project
-  * Compute Shared VPC Admin: `roles/compute.xpnAdmin`
-  * Network Admin: `roles/compute.networkAdmin`
-  * Security Admin: `roles/compute.securityAdmin`
-  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
-* KMS Project
-  * Cloud KMS Admin: `roles/cloudkms.admin`
-* Serverless Project
-  * Security Admin: `roles/compute.securityAdmin`
-  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
-  * Cloud Run Developer: `roles/run.developer`
-  * Compute Network User: `roles/compute.networkUser`
-  * Artifact Registry Reader: `roles/artifactregistry.reader`
-
-**Note:** [Secret Manager Secret Accessor](https://cloud.google.com/run/docs/configuring/secrets#access-secret) role must be granted to the Cloud Run service account to allow read access on the secret.
-
 ## Usage
 
 Basic usage of this module is as follows:
@@ -156,3 +111,48 @@ module "secure_cloud_run" {
 | service\_url | Url of the created service. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Requirements
+
+### Software
+
+The following dependencies must be available:
+
+* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
+* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) < 5.0
+
+### APIs
+
+The Secure-cloud-run project will enable the following APIs to the Serverlesss Project:
+
+* Google VPC Access API: `vpcaccess.googleapis.com`
+* Compute API: `compute.googleapis.com`
+* Container Registry API: `container.googleapis.com`
+* Cloud Run API: `run.googleapis.com`
+* Cloud KMS API: `cloudkms.googleapis.com`
+
+The Secure-cloud-run project will enable the following APIs to the VPC Project:
+
+* Google VPC Access API: `vpcaccess.googleapis.com`
+* Compute API: `compute.googleapis.com`
+
+### Service Account
+
+A service account with the following roles must be used to provision
+the resources of this module:
+
+* VPC Project
+  * Compute Shared VPC Admin: `roles/compute.xpnAdmin`
+  * Network Admin: `roles/compute.networkAdmin`
+  * Security Admin: `roles/compute.securityAdmin`
+  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
+* KMS Project
+  * Cloud KMS Admin: `roles/cloudkms.admin`
+* Serverless Project
+  * Security Admin: `roles/compute.securityAdmin`
+  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
+  * Cloud Run Developer: `roles/run.developer`
+  * Compute Network User: `roles/compute.networkUser`
+  * Artifact Registry Reader: `roles/artifactregistry.reader`
+
+**Note:** [Secret Manager Secret Accessor](https://cloud.google.com/run/docs/configuring/secrets#access-secret) role must be granted to the Cloud Run service account to allow read access on the secret.
