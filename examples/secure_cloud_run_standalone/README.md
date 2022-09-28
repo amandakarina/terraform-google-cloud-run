@@ -59,12 +59,12 @@ This example assumes that below mentioned prerequisites are in place before cons
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | access\_context\_manager\_policy\_id | The id of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format="value(name)"`. | `number` | `null` | no |
+| access\_level\_members | The list of members who will be in the access level. | `list(string)` | n/a | yes |
 | billing\_account | The ID of the billing account to associate this project with. | `string` | n/a | yes |
 | create\_access\_context\_manager\_access\_policy | Defines if Access Context Manager will be created by Terraform. | `bool` | `false` | no |
 | domain | Domain name to run the load balancer on. | `string` | n/a | yes |
 | org\_id | The organization ID. | `string` | n/a | yes |
 | parent\_folder\_id | The ID of a folder to host the infrastructure created in this example. | `string` | `""` | no |
-| perimeter\_members | The list of members who will be in the access level. | `list(string)` | `[]` | no |
 | serverless\_folder\_suffix | The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>. | `string` | `""` | no |
 
 ## Outputs
@@ -103,6 +103,7 @@ A service account can be used with required roles to execute this module:
 
 * Organization Level:
   * Access Context Manager Editor: `roles/accesscontextmanager.policyEditor`
+  * Organization Policy Administrator: `roles/roles/orgpolicy.policyAdmin`
 * Parent level - Organization or Folder level:
   * Folder Admin - `roles/resourcemanager.folderAdmin`
   * Project Creator - `roles/resourcemanager.projectCreator`
