@@ -33,6 +33,19 @@ The resources/services/activations/deletions that this example will create/trigg
 * Creates KMS Keyring and Key for Cloud Run usage at security project.
 * Creates a Cloud Run service at service project.
 
+## Usage
+
+To provision this example, run the following from within this directory:
+
+- Rename `terraform.example.tfvars` to `terraform.tfvars` by running `mv terraform.example.tfvars terraform.tfvars` and update the file with values from your environment.
+- `terraform init` to get the plugins.
+- `terraform plan` to see the infrastructure plan.
+- `terraform apply` to apply the infrastructure build.
+
+### Clean up
+
+- Run `terraform destroy` to clean up your environment.
+
 ## Assumptions and Prerequisites
 
 This example assumes that below mentioned prerequisites are in place before consuming the example.
