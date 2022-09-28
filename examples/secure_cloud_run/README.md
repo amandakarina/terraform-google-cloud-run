@@ -24,9 +24,30 @@ The resources/services/activations/deletions that this example will create/trigg
   * Creates a Load Balancer Service using Google-managed SSL certificates.
   * Creates Cloud Armor Service only including the preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
 
+## Organization Policies
+
+By default, this example will apply 2 organization policies at the project level for the **Serverless Project**.
+  * Allow Ingress only from internal and Cloud Load Balancing.
+  * Allow VPC Egress to Private Ranges Only.
+
+To the organization policies to be applied at folder or organization level, the `policy_for` variable needs to be changed. Possible values: [\"project\", \"folder\", \"organization\"] and the variables `folder_id` or `organization_id` need to be be filled up, respectively.
+
+## Usage
+
+To provision this example, run the following from within this directory:
+
+- Rename `terraform.example.tfvars` to `terraform.tfvars` by running `mv terraform.example.tfvars terraform.tfvars` and update the file with values from your environment.
+- `terraform init` to get the plugins
+- `terraform plan` to see the infrastructure plan
+- `terraform apply` to apply the infrastructure build
+
+### Clean up
+
+- Run `terraform destroy` to clean up your environment.
+
 ## Assumptions and Prerequisites
 
-This example assumes that below mentioned prerequisites are in place before consuming the example.
+This example assumes that below mentioned pre-requisites are in place before consuming the example.
 
 * All required APIs are enabled in the GCP Project.
 * An Organization.
