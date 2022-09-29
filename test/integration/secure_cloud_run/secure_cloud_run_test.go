@@ -16,6 +16,7 @@ package cloud_run
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
@@ -34,13 +35,22 @@ func getResultFieldStrSlice(rs []gjson.Result, field string) []string {
 }
 
 func getPolicyID(t *testing.T, orgID string) string {
+	terraformSa := utils.ValFromEnv(t, "TF_VAR_terraform_sa")
+	utils.SetEnv(t, "GOOGLE_IMPERSONATE_SERVICE_ACCOUNT", terraformSa)
+	saSplit := strings.SplitN(terraformSa, "/", 4)
+	serviceaccount := saSplit[len(saSplit)-1]
+	utils.SetEnv(t, "GOOGLE_IMPERSONATE_SERVICE_ACCOUNT", terraformSa)
 	gcOpts := gcloud.WithCommonArgs([]string{"--format", "value(name)"})
-	op := gcloud.Run(t, fmt.Sprintf("access-context-manager policies list --organization=%s ", orgID), gcOpts)
+	op := gcloud.Run(t, fmt.Sprintf("access-context-manager policies list --organization=%s --impersonate-service-account=%s", orgID, serviceaccount), gcOpts)
 	return op.String()
 }
 
 func TestSecureCloudRun(t *testing.T) {
 
+	terraformSa := utils.ValFromEnv(t, "TF_VAR_terraform_sa")
+	saSplit := strings.SplitN(terraformSa, "/", 4)
+	serviceaccount := saSplit[len(saSplit)-1]
+	utils.SetEnv(t, "GOOGLE_IMPERSONATE_SERVICE_ACCOUNT", terraformSa)
 	orgID := utils.ValFromEnv(t, "TF_VAR_org_id")
 	resourcesSuffix := utils.ValFromEnv(t, "TF_VAR_resource_names_suffix")
 	policyID := getPolicyID(t, orgID)
@@ -51,9 +61,6 @@ func TestSecureCloudRun(t *testing.T) {
 
 	secure_cloud_run.DefineVerify(func(assert *assert.Assertions) {
 
-		terraformSa := secure_cloud_run.GetStringOutput("terraform_sa_email")
-		utils.SetEnv(t, "GOOGLE_IMPERSONATE_SERVICE_ACCOUNT", terraformSa)
-
 		vpcProjectId := secure_cloud_run.GetStringOutput("vpc_project_id")
 		serverlessProjectId := secure_cloud_run.GetStringOutput("serverless_project_id")
 		connectorId := secure_cloud_run.GetStringOutput("connector_id")
@@ -61,13 +68,13 @@ func TestSecureCloudRun(t *testing.T) {
 		kmsProjectName := secure_cloud_run.GetStringOutput("kms_project_id")
 		kmsKeyRingName := secure_cloud_run.GetStringOutput("keyring_name")
 		kmsKey := secure_cloud_run.GetStringOutput("key_name")
-		opKMS := gcloud.Runf(t, "kms keys describe %s --keyring=%s --project=%s --location us-central1", kmsKey, kmsKeyRingName, kmsProjectName)
+		opKMS := gcloud.Runf(t, "kms keys describe %s --keyring=%s --project=%s --location us-central1 --impersonate-service-account=%s", kmsKey, kmsKeyRingName, kmsProjectName, serviceaccount)
 		keyFullName := fmt.Sprintf("projects/%s/locations/us-central1/keyRings/%s/cryptoKeys/%s", kmsProjectName, kmsKeyRingName, kmsKey)
 		assert.Equal(keyFullName, opKMS.Get("name").String(), fmt.Sprintf("should have key %s", keyFullName))
 
 		expectedImage := "us-docker.pkg.dev/cloudrun/container/hello"
 		cloudRunName := "hello-world"
-		opCloudRun := gcloud.Runf(t, "run services describe %s --region=us-central1 --project=%s --impersonate-service-account=%s", cloudRunName, serverlessProjectId, terraformSa)
+		opCloudRun := gcloud.Runf(t, "run services describe %s --region=us-central1 --project=%s --impersonate-service-account=%s", cloudRunName, serverlessProjectId, serviceaccount)
 		annotations := opCloudRun.Get("spec.template.metadata.annotations").Map()
 		assert.Equal(cloudRunName, opCloudRun.Get("metadata.name").String(), fmt.Sprintf("Should have same id: %s", cloudRunName))
 		assert.Equal("1", annotations["autoscaling.knative.dev/minScale"].String(), "Should have minScale equals to 1")
@@ -79,7 +86,7 @@ func TestSecureCloudRun(t *testing.T) {
 		connectorName := fmt.Sprintf("con-run-%s", resourcesSuffix)
 		expectedSubnet := fmt.Sprintf("vpc-subnet-%s", resourcesSuffix)
 		expectedMachineType := "e2-micro"
-		opVPCConnector := gcloud.Runf(t, "compute networks vpc-access connectors describe %s --region=us-central1 --project=%s --impersonate-service-account=%s", connectorName, serverlessProjectId, terraformSa)
+		opVPCConnector := gcloud.Runf(t, "compute networks vpc-access connectors describe %s --region=us-central1 --project=%s --impersonate-service-account=%s", connectorName, serverlessProjectId, serviceaccount)
 		assert.Equal(connectorId, opVPCConnector.Get("name").String(), fmt.Sprintf("Should have same id: %s", connectorId))
 		assert.Equal(expectedSubnet, opVPCConnector.Get("subnet.name").String(), fmt.Sprintf("Should have same subnetwork: %s", expectedSubnet))
 		assert.Equal(expectedMachineType, opVPCConnector.Get("machineType").String(), fmt.Sprintf("Should have same machineType: %s", expectedMachineType))
@@ -89,11 +96,11 @@ func TestSecureCloudRun(t *testing.T) {
 		assert.Equal("200", opVPCConnector.Get("minThroughput").String(), "Should have minThroughput equals to 200")
 
 		expectedCloudArmorName := "cloud-armor-waf-policy"
-		opCloudArmor := gcloud.Runf(t, "compute security-policies describe %s --project=%s --impersonate-service-account=%s", expectedCloudArmorName, serverlessProjectId, terraformSa).Array()
+		opCloudArmor := gcloud.Runf(t, "compute security-policies describe %s --project=%s --impersonate-service-account=%s", expectedCloudArmorName, serverlessProjectId, serviceaccount).Array()
 		assert.Equal(expectedCloudArmorName, opCloudArmor[0].Get("name").String(), fmt.Sprintf("Cloud Armor name should be %s", expectedCloudArmorName))
 
 		expectedLbName := "tf-cr-lb-address"
-		opLoadBalancer := gcloud.Runf(t, "compute addresses describe %s --global --project=%s --impersonate-service-account=%s", expectedLbName, serverlessProjectId, terraformSa).Array()
+		opLoadBalancer := gcloud.Runf(t, "compute addresses describe %s --global --project=%s --impersonate-service-account=%s", expectedLbName, serverlessProjectId, serviceaccount).Array()
 		assert.Equal(expectedLbName, opLoadBalancer[0].Get("name").String(), fmt.Sprintf("Load Balancer Name should be %s", expectedLbName))
 
 		run_identity_services_sa := secure_cloud_run.GetStringOutput("run_identity_services_sa")
