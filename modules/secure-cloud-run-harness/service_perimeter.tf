@@ -84,10 +84,7 @@ module "regular_service_perimeter" {
 
   access_levels = [module.access_level_members.name]
 
-  egress_policies = distinct(concat(
-    local.default_egress_policies,
-    var.egress_policies
-  ))
+  egress_policies = var.egress_policies
   ingress_policies = var.ingress_policies
 
   depends_on = [

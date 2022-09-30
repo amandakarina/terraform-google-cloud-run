@@ -99,3 +99,33 @@ Know more about [Cloud Run Deployment Permissions](https://cloud.google.com/run/
 
 The [Project Factory module](https://registry.terraform.io/modules/terraform-google-modules/project-factory/google/latest) and the
 [IAM module](https://registry.terraform.io/modules/terraform-google-modules/iam/google/latest) may be used in combination to provision a service account with the necessary roles applied.
+
+### Using KMS and/or Artifact Registry
+
+To use KSM or Artifact Registry with this example and the module you should run first to create the Service Perimenter and then edit the *egress_rules* variable to add the rules for the service within the perimenter.
+
+Add the code below on your .tfvars files and run terraform apply.
+
+  ```hcl
+  egress_policies = [
+    {
+      "from" = {
+        "identity_type" = ""
+        "identities"    = ["serviceAccount:<SERVERLESS-SERVICE-IDENTITY>"]
+      },
+      "to" = {
+        "resources" = ["projects/<SECURITY-PROJECT-NUMBER>"]
+        "operations" = {
+          "cloudkms.googleapis.com" = {
+            "methods" = ["*"]
+          }
+          "artifactregistry.googleapis.com" = {
+            "methods" = [
+              "artifactregistry.googleapis.com/DockerRead"
+            ]
+          }
+        }
+      }
+    },
+  ]
+  ```
