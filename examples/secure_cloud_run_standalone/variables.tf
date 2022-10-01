@@ -57,3 +57,4 @@ variable "domain" {
   description = "Domain name to run the load balancer on."
   type        = string
 }
+
