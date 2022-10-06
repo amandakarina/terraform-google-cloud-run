@@ -17,6 +17,7 @@
 output "project_id" {
   value = module.project.project_id
 }
+
 output "sa_email" {
   value = google_service_account.int_test.email
 }
