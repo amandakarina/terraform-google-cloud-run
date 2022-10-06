@@ -3,7 +3,6 @@
 
 # Local tfvars terraform.tfvars
 **/terraform.tfvars
-*.tfvars
 *.tfvars.json
 
 # .tfstate files
