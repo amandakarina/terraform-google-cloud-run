@@ -64,7 +64,7 @@ func TestSecureCloudRun(t *testing.T) {
 		assert.Equal(connectorId, annotations["run.googleapis.com/vpc-access-connector"].String(), fmt.Sprintf("Should have %s VPC Access Connector Id", connectorId))
 		assert.Equal(expectedImage, opCloudRun.Get("spec.template.spec.containers.0.image").String(), fmt.Sprintf("Should have %s image.", expectedImage))
 		assert.Equal(keyFullName, annotations["run.googleapis.com/encryption-key"].String(), fmt.Sprintf("Should have same encryption-Key: %s", keyFullName))
-		
+
 		connectorName := "serverless-connector"
 		expectedSubnet := "vpc-subnet"
 		expectedMachineType := "e2-micro"
