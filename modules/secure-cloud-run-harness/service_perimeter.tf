@@ -41,7 +41,7 @@ module "access_level_members" {
   description = "${local.prefix} Access Level"
   policy      = local.access_context_manager_policy_id
   name        = local.access_level_name
-  members     = var.access_level_additional_members
+  members     = var.access_level_members
 }
 
 module "regular_service_perimeter" {
@@ -78,4 +78,14 @@ module "regular_service_perimeter" {
 resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_serverless_resource" {
   perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
   resource       = "projects/${module.serverless_project.project_number}"
+}
+
+resource "time_sleep" "wait_90_seconds" {
+  depends_on = [
+    google_access_context_manager_service_perimeter_resource.service_perimeter_security_resource,
+    google_access_context_manager_service_perimeter_resource.service_perimeter_serverless_resource
+  ]
+
+  create_duration  = "90s"
+  destroy_duration = "90s"
 }

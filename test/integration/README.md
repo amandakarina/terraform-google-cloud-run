@@ -1,1 +1,0 @@
-# sbp-serverless-blueprint

@@ -55,6 +55,7 @@ module "cloud_run_network" {
   connector_on_host_project = false
   ip_cidr_range             = var.ip_cidr_range
   create_subnet             = var.create_subnet
+  resource_names_suffix     = var.resource_names_suffix
 
   depends_on = [
     module.vpc_project_apis
@@ -69,9 +70,7 @@ resource "google_project_service_identity" "serverless_sa" {
 }
 
 resource "google_artifact_registry_repository_iam_member" "artifact_registry_iam" {
-
-  provider = google-beta
-  count    = var.use_artifact_registry_image ? 1 : 0
+  count = var.grant_artifact_register_reader ? 1 : 0
 
   project    = var.artifact_registry_repository_project_id
   location   = var.artifact_registry_repository_location

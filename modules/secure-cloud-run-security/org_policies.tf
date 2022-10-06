@@ -47,4 +47,3 @@ module "cloudrun_allowed_vpc_egress" {
   allow             = ["private-ranges-only"]
   allow_list_length = 1
 }
-

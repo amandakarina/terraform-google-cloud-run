@@ -108,3 +108,13 @@ output "organization_id" {
   description = "The organization ID to apply the policy to."
   value       = var.organization_id
 }
+
+output "domain" {
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
+  value       = var.domain
+}
+
+output "shared_vpc_name" {
+  description = "Shared VPC name which is going to be re-used to create Serverless Connector."
+  value       = var.shared_vpc_name
+}

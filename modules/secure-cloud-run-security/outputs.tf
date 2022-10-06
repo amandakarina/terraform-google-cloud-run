@@ -15,7 +15,7 @@
  */
 
 output "key_self_link" {
-  description = "KMS crypto key."
+  description = "Key self link."
   value       = module.cloud_run_kms.keys[var.key_name]
 }
 

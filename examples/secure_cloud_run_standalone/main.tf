@@ -41,7 +41,7 @@ module "secure_harness" {
   private_service_connect_ip                  = "10.3.0.5"
   create_access_context_manager_access_policy = false
   access_context_manager_policy_id            = var.access_context_manager_policy_id
-  access_level_additional_members             = var.perimeter_members
+  access_level_members                        = var.access_level_members
   key_name                                    = "key-secure-artifact-registry"
   keyring_name                                = "krg-secure-artifact-registry"
   prevent_destroy                             = false
@@ -50,19 +50,10 @@ module "secure_harness" {
   ingress_policies                            = var.ingress_policies
 }
 
-resource "time_sleep" "wait_90_seconds" {
-  depends_on = [module.secure_harness]
-
-  create_duration = "90s"
-}
-
 resource "null_resource" "copy_image" {
   provisioner "local-exec" {
     command = "gcloud container images add-tag ${local.hello_image} ${local.location}-docker.pkg.dev/${module.secure_harness.security_project_id}/${local.repository_name}/hello:latest -q"
   }
-  depends_on = [
-    time_sleep.wait_90_seconds
-  ]
 }
 
 module "secure_cloud_run" {
