@@ -63,7 +63,7 @@ module "regular_service_perimeter" {
 
   access_levels = [module.access_level_members.name]
 
-  egress_policies = var.egress_policies
+  egress_policies  = var.egress_policies
   ingress_policies = var.ingress_policies
 
   depends_on = [
@@ -78,6 +78,11 @@ module "regular_service_perimeter" {
 resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_serverless_resource" {
   perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
   resource       = "projects/${module.serverless_project.project_number}"
+}
+
+resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_security_resource" {
+  perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
+  resource       = "projects/${module.security_project.project_number}"
 }
 
 resource "time_sleep" "wait_90_seconds" {
