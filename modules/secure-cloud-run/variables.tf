@@ -180,9 +180,20 @@ variable "resource_names_suffix" {
   default     = null
 }
 
+variable "create_cloud_armor_policies" {
+  type        = bool
+  description = "When `true` the terraform will create the Cloud Armor policies. When `false`, the user must provide his own Cloud Armor name in `cloud_armor_policies_name`."
+  default     = true
+}
+
+variable "cloud_armor_policies_name" {
+  type        = string
+  description = "Cloud Armor policy ID already created. If `create_cloud_armor_policies` is `false`, this variable must be provided, If `create_cloud_armor_policies` is `true`, this variable will be ignored."
+  default     = null
+}
+
 variable "verified_domain_name" {
   type        = list(string)
   description = "Custom Domain Name"
   default     = []
 }
-
