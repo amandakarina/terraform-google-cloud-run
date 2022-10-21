@@ -25,6 +25,7 @@ module "cloud_run" {
   encryption_key        = var.encryption_key
   members               = var.members
   env_vars              = var.env_vars
+  verified_domain_name  = var.verified_domain_name
 
   service_annotations = {
     "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"

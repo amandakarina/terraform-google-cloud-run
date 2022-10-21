@@ -157,3 +157,9 @@ variable "members" {
   description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
   default     = []
 }
+
+variable "verified_domain_name" {
+  type        = list(string)
+  description = "Custom Domain Name"
+}
+

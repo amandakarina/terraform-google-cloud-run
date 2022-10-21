@@ -49,6 +49,7 @@ module "cloud_run_core" {
 | region | Location for load balancer and Cloud Run resources. | `string` | n/a | yes |
 | service\_name | The name of the Cloud Run service to create. | `string` | n/a | yes |
 | ssl | Run load balancer on HTTPS and provision managed certificate with provided `domain`. | `bool` | `true` | no |
+| verified\_domain\_name | Custom Domain Name | `list(string)` | n/a | yes |
 | vpc\_connector\_id | VPC Connector id in the format projects/PROJECT/locations/LOCATION/connectors/NAME. | `string` | n/a | yes |
 
 ## Outputs
