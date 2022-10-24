@@ -3,14 +3,12 @@
 
 # Local tfvars terraform.tfvars
 **/terraform.tfvars
-*.tfvars
 *.tfvars.json
 
 # .tfstate files
 *.tfstate
 *.tfstate.*
 *.lock.hcl
-*.tfvars*
 
 # Crash log files
 crash.log
