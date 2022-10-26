@@ -84,7 +84,7 @@ module "secure_cloud_run" {
   artifact_registry_repository_project_id = module.secure_harness.security_project_id
   artifact_registry_repository_name       = local.repository_name
   env_vars                                = [{ name = "TEST", value = "true" }]
-  domain                                  = var.domain
+  domain                                  = [var.domain]
 
   depends_on = [
     null_resource.copy_image

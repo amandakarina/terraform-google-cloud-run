@@ -20,7 +20,7 @@ module "lb-http" {
   name                            = "tf-cr-lb"
   project                         = var.serverless_project_id
   ssl                             = var.ssl
-  managed_ssl_certificate_domains = [var.domain]
+  managed_ssl_certificate_domains = var.domain
   https_redirect                  = var.ssl
 
   backends = {

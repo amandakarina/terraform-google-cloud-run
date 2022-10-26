@@ -83,8 +83,7 @@ variable "ssl" {
 
 variable "domain" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
-  type        = string
-  default     = "rudnickirenatolb.tk"
+  type        = list(string)
 }
 
 variable "lb-name" {
@@ -153,4 +152,3 @@ variable "cloud_run_sa" {
   description = "Service account to be used on Cloud Run."
   type        = string
 }
-
