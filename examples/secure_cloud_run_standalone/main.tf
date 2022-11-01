@@ -54,6 +54,10 @@ resource "null_resource" "copy_image" {
   provisioner "local-exec" {
     command = "gcloud container images add-tag ${local.hello_image} ${local.location}-docker.pkg.dev/${module.secure_harness.security_project_id}/${local.repository_name}/hello:latest -q"
   }
+
+  depends_on = [
+    module.secure_harness
+  ]
 }
 
 module "secure_cloud_run" {
