@@ -56,11 +56,6 @@ variable "region" {
   type        = string
 }
 
-variable "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
-  type        = list(string)
-}
-
 variable "default_rules" {
   description = "Default rule for Cloud Armor."
   default = {
@@ -131,13 +126,6 @@ variable "owasp_rules" {
     expression = string
   }))
 }
-
-variable "ssl" {
-  description = "Run load balancer on HTTPS and provision managed certificate with provided `domain`."
-  type        = bool
-  default     = true
-}
-
 variable "lb_name" {
   description = "Name for load balancer and associated resources."
   default     = "tf-cr-lb"
@@ -191,4 +179,17 @@ variable "vpc_egress_value" {
   description = "Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic."
   type        = string
   default     = "private-ranges-only"
+}
+
+variable "ssl_certificates" {
+  type = object({
+    ssl_certificates_self_links       = list(string)
+    generate_certificates_for_domains = list(string)
+  })
+  validation {
+    condition = (!(length(var.ssl_certificates.ssl_certificates_self_links) == 0 && length(var.ssl_certificates.generate_certificates_for_domains) == 0) ||
+    !(length(var.ssl_certificates.ssl_certificates_self_links) > 0 && length(var.ssl_certificates.generate_certificates_for_domains) > 0))
+    error_message = "You must provide a SSL Certificate self-link or at least one domain to a SSL Certificate be generated."
+  }
+  description = "A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer."
 }
