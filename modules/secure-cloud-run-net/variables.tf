@@ -66,6 +66,7 @@ variable "flow_sampling" {
   type        = number
   default     = 1.0
 }
+
 variable "resource_names_suffix" {
   description = "A suffix to concat in the end of the resources names."
   type        = string

@@ -23,4 +23,3 @@ provider "google-beta" {
   impersonate_service_account = "YOUR-TERRAFORM-SA"
   request_timeout             = "60s"
 }
-
