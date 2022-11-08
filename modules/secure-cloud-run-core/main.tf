@@ -38,3 +38,28 @@ module "cloud_run" {
     "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value
   }
 }
+
+resource "google_project_service_identity" "serverless_sa" {
+  provider = google-beta
+
+  project = var.project_id
+  service = "run.googleapis.com"
+}
+
+locals {
+  secrets = distinct(flatten([
+    for secret in var.volumes : [
+      for secret_name in secret.name : [
+        secret_name.secret_name
+      ]
+    ]
+  ]))
+}
+
+resource "google_secret_manager_secret_iam_member" "member" {
+  for_each  = local.secrets
+  secret_id = each.value
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
+}
+

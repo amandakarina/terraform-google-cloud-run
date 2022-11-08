@@ -193,3 +193,15 @@ variable "ssl_certificates" {
   }
   description = "A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer."
 }
+
+variable "volumes" {
+  description = "[Beta] Volumes needed for environment variables (when using secret)."
+  type = list(object({
+    name = string
+    secret = set(object({
+      secret_name = string
+      items       = map(string)
+    }))
+  }))
+  default = []
+}
