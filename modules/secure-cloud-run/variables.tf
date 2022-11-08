@@ -150,6 +150,7 @@ variable "create_subnet" {
   type        = bool
   default     = true
 }
+
 variable "policy_for" {
   description = "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
   type        = string
