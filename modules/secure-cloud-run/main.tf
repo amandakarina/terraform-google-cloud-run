@@ -135,7 +135,11 @@ module "cloud_run_core" {
   min_scale_instances         = var.min_scale_instances
   max_scale_instances         = var.max_scale_instances
   ssl_certificates            = var.ssl_certificates
+<<<<<<< Updated upstream
   volumes                     = var.volumes
+=======
+  volumes                     = var.volumes    
+>>>>>>> Stashed changes
 
   depends_on = [
     module.serverless_project_apis,
