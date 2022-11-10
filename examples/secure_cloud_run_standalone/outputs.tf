@@ -78,4 +78,3 @@ output "connector_id" {
   value       = module.secure_cloud_run.connector_id
   description = "VPC serverless connector ID."
 }
-
