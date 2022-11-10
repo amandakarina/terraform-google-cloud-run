@@ -74,7 +74,7 @@ locals {
 }
 
 resource "google_secret_manager_secret_iam_member" "member" {
-  for_each  = local.secrets
+  for_each  = toset(local.secrets)
   secret_id = each.value
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
