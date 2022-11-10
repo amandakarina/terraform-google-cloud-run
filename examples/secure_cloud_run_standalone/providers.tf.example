@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-locals {
-  terraform_service_account = "saterraform@standalonepermission.iam.gserviceaccount.com"
-}
 provider "google" {
-  impersonate_service_account = local.terraform_service_account
+  impersonate_service_account = "YOUR-TERRAFORM-SA"
   request_timeout             = "60s"
 }
+
 provider "google-beta" {
-  impersonate_service_account = local.terraform_service_account
+  impersonate_service_account = "YOUR-TERRAFORM-SA"
   request_timeout             = "60s"
 }
