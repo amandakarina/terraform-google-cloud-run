@@ -87,8 +87,8 @@ module "secure_cloud_run" {
       name = "test",
       secret = [
         {
-          secret_name = "projects/306767193446/secrets/secret-tf",
-          items       = { key = "1", "path" = "/secret/" }
+          secret_name = "secret-tf",
+          items       = { key = "1", "path" = "projects/306767193446/secrets/" }
         }
       ]
     }
