@@ -53,7 +53,12 @@ module "cloud_run" {
     "autoscaling.knative.dev/minScale"        = var.min_scale_instances,
     "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
     "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value
+    "run.googleapis.com/secrets"              = local.secrets_alias
   }
+
+  depends_on = [
+    google_secret_manager_secret_iam_member.member
+  ]
 }
 
 resource "google_project_service_identity" "serverless_sa" {
@@ -66,11 +71,18 @@ resource "google_project_service_identity" "serverless_sa" {
 locals {
   secrets = distinct(flatten([
     for secret in var.volumes : [
-      for secret_name in secret.name : [
-        secret_name.secret_name
+      for secret_name in secret.secret : [
+        {
+          (secret.name) = secret_name.secret_name
+        }
       ]
     ]
   ]))
+
+  secrets_alias = [
+    for secret in toset(local.secrets):
+      "${secret.key}:${secret.value},"
+  ]
 }
 
 resource "google_secret_manager_secret_iam_member" "member" {
