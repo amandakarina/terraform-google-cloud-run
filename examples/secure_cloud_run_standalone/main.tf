@@ -82,21 +82,23 @@ module "secure_cloud_run" {
   artifact_registry_repository_project_id = module.secure_harness.security_project_id
   artifact_registry_repository_name       = local.repository_name
   env_vars                                = [{ name = "TEST", value = "true" }]
-  volumes = [
-    {
-      name = "test",
-      secret = [
-        {
-          secret_name = "secret-tf",
-          items       = { key = "1", "path" = "projects/306767193446/secrets/" }
-        }
-      ]
-    }
-  ]
+
   ssl_certificates = {
     generate_certificates_for_domains = var.domain
     ssl_certificates_self_links       = []
   }
+
+  # volumes = [
+  #   {
+  #     name = "VOLUME_NAME",
+  #     secret = [
+  #       {
+  #         secret_name = "SECRET_NAME",
+  #         items       = { key = "SECRET_VERSION", "path" = "projects/PROJECT_NUMBER/secrets/" }
+  #       }
+  #     ]
+  #   }
+  # ]
 
   depends_on = [
     null_resource.copy_image

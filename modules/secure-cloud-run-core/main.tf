@@ -57,7 +57,7 @@ module "cloud_run" {
   }
 
   depends_on = [
-    google_secret_manager_secret_iam_member.member
+    time_sleep.wait_30_seconds
   ]
 }
 
@@ -68,28 +68,36 @@ resource "google_project_service_identity" "serverless_sa" {
   service = "run.googleapis.com"
 }
 
+resource "time_sleep" "wait_30_seconds" {
+  create_duration = "30s"
+
+  depends_on = [
+    google_secret_manager_secret_iam_member.member
+  ]
+}
+
 locals {
   secrets = distinct(flatten([
     for secret in var.volumes : [
       for secret_name in secret.secret : [
         {
           "name" : secret.name,
-          "secret_name" : secret_name.secret_name
+          "secret_name" : secret_name.secret_name,
+          "path" : secret_name.items.path
         }
       ]
     ]
   ]))
 
   secrets_alias = [
-    for secret in local.secrets : 
-      "${secret.name}:${secret.secret_name}"
+    for secret in local.secrets :
+    "${secret.name}:${secret.path}${secret.secret_name}"
   ]
 }
 
 resource "google_secret_manager_secret_iam_member" "member" {
   for_each  = { for secret in local.secrets : secret.name => secret }
-  secret_id = each.value.secret_name
+  secret_id = "${each.value.path}${each.value.secret_name}"
   role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
+  member    = "serviceAccount:${var.cloud_run_sa}"
 }
-
