@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
+locals {
+  annotations_for_template = {
+    "autoscaling.knative.dev/maxScale"        = var.max_scale_instances,
+    "autoscaling.knative.dev/minScale"        = var.min_scale_instances,
+    "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
+    "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value
+  }
+
+  conditional_annotations = {
+    secret = length(local.secrets_alias) == 0 ? {} : { "run.googleapis.com/secrets" = join(", ", toset(local.secrets_alias)) }
+  }
+}
+
 module "cloud_run" {
   source = "../.."
 
@@ -48,13 +61,10 @@ module "cloud_run" {
     "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
   }
 
-  template_annotations = {
-    "autoscaling.knative.dev/maxScale"        = var.max_scale_instances,
-    "autoscaling.knative.dev/minScale"        = var.min_scale_instances,
-    "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
-    "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value,
-    "run.googleapis.com/secrets"              = join(", ", toset(local.secrets_alias))
-  }
+  template_annotations = merge(
+    local.annotations_for_template,
+    local.conditional_annotations["secret"]
+  )
 
   depends_on = [
     time_sleep.wait_30_seconds
