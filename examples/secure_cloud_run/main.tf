@@ -51,4 +51,18 @@ module "secure_cloud_run" {
     generate_certificates_for_domains = var.domain
     ssl_certificates_self_links       = []
   }
+
+  # If you are going to use secrets as volume uncomment this part of the code and fill with your values.
+  # Also, to use secrets from another project you will need to create a VPC directional rule or add the project to the peremiter.
+  # volumes = [
+  #   {
+  #     name = "VOLUME_NAME",
+  #     secret = [
+  #       {
+  #         secret_name = "SECRET_NAME",
+  #         items       = { key = "SECRET_VERSION", "path" = "projects/PROJECT_NUMBER/secrets/" }
+  #       }
+  #     ]
+  #   }
+  # ]
 }
