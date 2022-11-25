@@ -46,6 +46,7 @@ module "secure_cloud_run" {
   create_subnet               = true
   create_cloud_armor_policies = var.create_cloud_armor_policies
   cloud_armor_policies_name   = var.cloud_armor_policies_name
+  groups                      = var.groups
 
   ssl_certificates = {
     generate_certificates_for_domains = var.domain
